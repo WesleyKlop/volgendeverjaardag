@@ -1,0 +1,10 @@
+{
+  "deno.codeLens.test": true,
+  "deno.enable": true,
+  "deno.importMap": "./import-map.json",
+  "editor.formatOnSave": true,
+  "editor.formatOnPaste": true,
+  "[typescript]": {
+    "editor.defaultFormatter": "denoland.vscode-deno"
+  }
+}
