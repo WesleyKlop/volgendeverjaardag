@@ -1,10 +1,18 @@
 <!doctype html>
-<html lang="en">
+<html lang="nl">
   <head>
     <meta charset="utf-8"/>
-    <title>My First Parcel App</title>
+    <title>Wie is de volgende jarige?</title>
+    <script type="module" src="app.ts"></script>
   </head>
-  <body>
-    <h1>Hello, World!</h1>
+  <body class="min-w-screen min-h-screen grid place-items-center">
+  <main>
+    <h1 class="text-4xl">Wie is er ookalweer jarig?</h1>
+    <form id="code-form" method="POST">
+      <label for="code-input">Jouw groepscode</label>
+      <input placeholder="jouw-code" id="code-input" type="text" autocomplete="off" autofocus name="code">
+      <button type="submit">Feest!</button>
+    </form>
+  </main>
   </body>
 </html>
