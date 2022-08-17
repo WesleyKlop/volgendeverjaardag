@@ -1,7 +1,7 @@
 import { Status } from "@deno/http/http_status.ts";
 import { RouteHandler, RouteHandlerContext } from "@deno/x/router";
 import { PoolClient } from "@deno/x/postgres";
-import { doInTransaction } from "./db.ts";
+import { withConnection } from "./db.ts";
 import { withErrorHandling } from "./errors.ts";
 
 export const jsonResponse = (
@@ -26,7 +26,7 @@ const withDatabase = (
   handler: ExtendedRouteHandler,
 ): RouteHandler =>
 async (req: Request, ctx: RouteHandlerContext) => {
-  return await doInTransaction((client) => {
+  return await withConnection((client) => {
     return Promise.resolve(handler(req, ctx, client));
   });
 };

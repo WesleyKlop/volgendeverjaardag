@@ -7,7 +7,7 @@ services:
       context: server
       target: builder
     ports:
-      - 8080
+      - 8080:8080
     environment:
       DATABASE_URL: postgres://dev:devword@database:5432/app?schema=public
     depends_on:

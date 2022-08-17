@@ -1,10 +1,10 @@
-import {createRouter} from "@deno/x/router";
-import group from "./group.ts";
+import { createRouter } from "@deno/x/router";
+import birthdays from "./birthdays.ts";
 import health from "./health.ts";
 
 const router = createRouter({
-    ...health,
-    ...group,
+  ...health,
+  ...birthdays,
 });
 
 export default router;

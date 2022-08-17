@@ -4,7 +4,8 @@
   "description": "",
   "scripts": {
     "start": "parcel src/index.html",
-    "build": "parcel build src/index.html"
+    "build": "parcel build src/index.html",
+    "fmt": "prettier --write \"src\""
   },
   "keywords": [],
   "author": "Wesley Klop <wesley19097@gmail.com>",
@@ -12,6 +13,7 @@
   "devDependencies": {
     "parcel": "^2.7.0",
     "postcss": "^8.4.16",
+    "prettier": "^2.7.1",
     "tailwindcss": "^3.1.8"
   }
 }

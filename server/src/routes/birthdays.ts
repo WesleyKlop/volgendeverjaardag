@@ -1,5 +1,5 @@
 import { findByCode } from "../models/Birthday.ts";
-import { getHandler, jsonResponse } from "../utils/http.ts";
+import { getHandler, jsonResponse, postHandler } from "../utils/http.ts";
 
 const getGroupMembers = getHandler(async (_req, ctx, client) => {
   const { code } = ctx.params;
@@ -21,6 +21,11 @@ const getGroupMembers = getHandler(async (_req, ctx, client) => {
   return jsonResponse(birthdays, 200);
 });
 
+const registerBirthday = postHandler((req, ctx, client) => {
+  return jsonResponse({});
+});
+
 export default {
   "/api/birthdays/:code": getGroupMembers,
+  "/api/birthdays": registerBirthday,
 };

@@ -1,23 +1,33 @@
-import './app.css';
+import "./app.css";
 
 const findNextBirthDay = async (code: string) => {
-    const response = await fetch(`/api/birthdays/${encodeURIComponent(code)}`, {
-        method: 'GET',
-        headers: {
-            Accept: 'application/json',
-        },
-        cache: "no-cache",
-    }).then(r => r.ok && r.json())
+  const response = await fetch(`/api/birthdays/${encodeURIComponent(code)}`, {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+    },
+    cache: "no-cache",
+  }).then((r) => r.ok && r.json());
 
-    console.log(response)
-}
+  if (typeof response === "boolean") {
+    return "Deze groep bestaat niet.";
+  }
+  console.log(response);
+  return response;
+};
 
-const $form = document.querySelector<HTMLFormElement>('#code-form')!;
+const $form = document.querySelector<HTMLFormElement>("#code-form")!;
+const $result = document.querySelector<HTMLDivElement>("#result")!;
 
-$form.addEventListener('submit', async (evt) => {
-    evt.preventDefault()
+$form.addEventListener(
+  "submit",
+  async (evt) => {
+    evt.preventDefault();
 
-    const nextBirthDayInfo = await findNextBirthDay($form.code.value)
+    const nextBirthDayInfo = await findNextBirthDay($form.code.value);
 
-    $form.reset()
-}, {once: false})
+    $result.innerHTML = nextBirthDayInfo;
+    $form.reset();
+  },
+  { once: false }
+);

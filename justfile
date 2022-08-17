@@ -1,4 +1,4 @@
-permissions := "--allow-net --allow-env"
+permissions := "--allow-net --allow-env --allow-read"
 importMap := "--import-map=./import-map.json"
 
 start-server:
@@ -17,6 +17,9 @@ compile-server: clean-server
 clean-server:
     rm -rf ./server/bin
 
+fmt-server:
+    cd server && deno fmt
+
 start-client:
     cd client && npm start
 
@@ -26,6 +29,11 @@ build-client: clean-client
 clean-client:
     rm -rf ./client/dist
 
+fmt-client:
+    cd client && npm run fmt
+
 build: compile-server build-client
 
 clean: clean-server clean-client
+
+fmt: fmt-server fmt-client

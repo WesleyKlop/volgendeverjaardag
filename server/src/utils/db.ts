@@ -7,15 +7,15 @@ export const getPool = () =>
 
 type Transaction<T> = (client: PoolClient) => Promise<T>;
 
-export const doInTransaction = async <T = void>(
-  transaction: Transaction<T>,
+export const withConnection = async <T = void>(
+  handler: Transaction<T>,
 ) => {
   const pool = getPool();
   const client = await pool.connect();
 
   let result: T;
   try {
-    result = await transaction(client);
+    result = await handler(client);
   } finally {
     client.release();
   }

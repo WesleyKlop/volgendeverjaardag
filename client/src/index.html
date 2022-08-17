@@ -1,18 +1,26 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="nl">
   <head>
-    <meta charset="utf-8"/>
+    <meta charset="utf-8" />
     <title>Wie is de volgende jarige?</title>
     <script type="module" src="app.ts"></script>
   </head>
   <body class="min-w-screen min-h-screen grid place-items-center">
-  <main>
-    <h1 class="text-4xl">Wie is er ookalweer jarig?</h1>
-    <form id="code-form" method="POST">
-      <label for="code-input">Jouw groepscode</label>
-      <input placeholder="jouw-code" id="code-input" type="text" autocomplete="off" autofocus name="code">
-      <button type="submit">Feest!</button>
-    </form>
-  </main>
+    <main>
+      <h1 class="text-4xl">Wie is er ookalweer jarig?</h1>
+      <form id="code-form" method="POST">
+        <label for="code-input">Jouw groepscode</label>
+        <input
+          placeholder="jouw-code"
+          id="code-input"
+          type="text"
+          autocomplete="off"
+          autofocus
+          name="code"
+        />
+        <button type="submit">Feest!</button>
+      </form>
+      <div id="result"></div>
+    </main>
   </body>
 </html>
