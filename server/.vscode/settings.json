@@ -1,7 +1,5 @@
 {
   "deno.codeLens.test": true,
-  "deno.enable": true,
-  "deno.importMap": "./server/import-map.json",
   "[typescript]": {
     "editor.defaultFormatter": "denoland.vscode-deno"
   }

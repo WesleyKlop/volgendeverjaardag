@@ -45,7 +45,7 @@ export default class Birthday implements IBirthday {
 
 export const findByCode = async (code: string, client: PoolClient) => {
   const results = await client.queryObject<
-    IBirthday
+    RawBirthday
   >`SELECT id, code, name, birth_date FROM birthdays WHERE code = ${code}`;
 
   return results.rows.map((row: RawBirthday) => {

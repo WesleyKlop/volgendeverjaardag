@@ -1,19 +1,6 @@
 version: "3.9"
 
 services:
-  server:
-    image: ghcr.io/wesleyklop/birthday-server
-    build:
-      context: server
-      target: builder
-    ports:
-      - 8080:8080
-    environment:
-      DATABASE_URL: postgres://dev:devword@database:5432/app?schema=public
-    depends_on:
-      - database
-    volumes:
-      - ./server:/usr/src/app
   database:
     image: postgres:14
     environment:
@@ -24,6 +11,33 @@ services:
       - 5432
     volumes:
       - db-data:/var/lib/postgresql/data
+  server:
+    image: ghcr.io/wesleyklop/birthday-server
+    build:
+      context: server
+      target: builder
+    expose:
+      - 8080
+    environment:
+      DATABASE_URL: postgres://dev:devword@database:5432/app?schema=public
+    depends_on:
+      - database
+    volumes:
+      - ./server:/usr/src/app
+  client:
+    image: ghcr.io/wesleyklop/birthday-app
+    build:
+      context: client
+      target: builder 
+    ports:
+      - 8081:8080
+    environment:
+      API_PORT: 8080
+      API_HOST: server
+    restart: on-failure
+    volumes:
+     - ./client:/usr/src/app
+
 
 volumes:
   db-data:

@@ -64,7 +64,7 @@ const registerBirthday = postHandler(async (req, ctx, client) => {
     return new Response(null, { status: 422 });
   }
 
-  const response = await client.queryObject`
+  const response = await client.queryObject<{ id: string }>`
     INSERT INTO birthdays (name, code, birth_date) 
       VALUES (${params.name}, ${params.code}, ${params.birthDate})
       RETURNING id;

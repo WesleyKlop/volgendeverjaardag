@@ -1,0 +1,14 @@
+server {
+    listen       8080;
+    server_name  0.0.0.0;
+
+    location / {
+        root   /srv/app;
+        index  index.html;
+        try_files $uri $uri/ /index.html;
+    }
+
+    location /api {
+        proxy_pass http://${API_HOST}:${API_PORT};
+    }
+}
