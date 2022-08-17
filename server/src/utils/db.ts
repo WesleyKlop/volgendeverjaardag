@@ -1,15 +1,9 @@
 import { Pool, PoolClient } from "@deno/x/postgres";
 
+const connectionUrl = new URL(Deno.env.get("DATABASE_URL") as string);
 let _pool: Pool;
 export const getPool = () =>
-  _pool ||= new Pool(
-    {
-      applicationName: "volgendeverjaardag",
-      host_type: "tcp",
-    },
-    4,
-    true,
-  );
+  _pool ||= new Pool(connectionUrl.toString(), 4, true);
 
 type Transaction<T> = (client: PoolClient) => Promise<T>;
 

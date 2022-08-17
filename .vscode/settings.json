@@ -1,7 +1,7 @@
 {
   "deno.codeLens.test": true,
   "deno.enable": true,
-  "deno.importMap": "./import-map.json",
+  "deno.importMap": "./server/import-map.json",
   "editor.formatOnSave": true,
   "editor.formatOnPaste": true,
   "[typescript]": {

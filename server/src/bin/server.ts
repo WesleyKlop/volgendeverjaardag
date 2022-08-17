@@ -1,7 +1,7 @@
 import serve from "../app.ts";
 import { getPool } from "../utils/db.ts";
 
-Deno.addSignalListener("SIGINT", async () => {
+Deno.addSignalListener("SIGTERM", async () => {
   await getPool().end();
   Deno.exit();
 });
