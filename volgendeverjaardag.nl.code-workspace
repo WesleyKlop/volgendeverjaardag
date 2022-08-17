@@ -1,22 +1,17 @@
 {
-  "folders": [
-    { "path": "client" }, 
-    { "path": "server" }, 
-    { "path": "." }
-  ],
+  "folders": [{ "path": "client" }, { "path": "server" }, { "path": "." }],
   "extensions": {
     "recommendations": ["skellock.just"]
   },
   "settings": {
+    "editor.formatOnSave": true,
     "files.exclude": {
       "**/.git": true,
-      "**/.svn": true,
-      "**/.hg": true,
-      "**/CVS": true,
       "**/.DS_Store": true,
       "**/Thumbs.db": true,
       "client/": true,
-      "server/": true
+      "server/": true,
+      ".parcel-cache/": true
     }
   }
 }

@@ -1,8 +1,11 @@
 {
   "include": ["src/**/*"],
   "compilerOptions": {
+    "jsx": "react",
     "isolatedModules": true,
     "target": "es2021",
-    "strict": true
+    "strict": true,
+    "moduleResolution": "NodeNext",
+    "allowSyntheticDefaultImports": true
   }
 }
