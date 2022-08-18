@@ -25,7 +25,7 @@ const bumpVersion = (currentVersion, bump, suffix) => {
  */
 export default async function determineNextVersion({ context, core, github }) {
   const { bump, suffix } = context.payload.inputs;
-  const response = await octokit.request(
+  const response = await github.request(
     "GET /repos/{owner}/{repo}/releases/latest",
     {
       owner: context.repo.owner,
