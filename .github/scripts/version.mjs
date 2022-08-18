@@ -25,13 +25,12 @@ const bumpVersion = (currentVersion, bump, suffix) => {
  */
 export default async function determineNextVersion({ context, core, github }) {
   const { bump, suffix } = context.payload.inputs;
-  const response = await github.request(
-    "GET /repos/{owner}/{repo}/releases/latest",
-    {
+  const response = await github
+    .request("GET /repos/{owner}/{repo}/releases/latest", {
       owner: context.repo.owner,
       repo: context.repo.repo,
-    }
-  );
+    })
+    .catch((r) => r);
   if (response.status !== 200) {
     console.log("No previous release found, going to v1.0.0");
     return "v1.0.0";
