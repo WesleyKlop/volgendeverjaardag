@@ -37,3 +37,4 @@ jobs:
           name: ${{ steps.version.outputs.name }}
           tag_name: ${{ steps.version.outputs.tag }} 
           generate_release_notes: true
+          draft: true
