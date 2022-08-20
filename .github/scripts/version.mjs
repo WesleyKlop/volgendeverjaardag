@@ -32,6 +32,8 @@ export default async function determineNextVersion({ context, core, github }) {
     })
     .catch((r) => r);
 
+  console.log(response);
+
   if (response.status !== 200) {
     console.log("No previous release found, going to v1.0.0");
     core.setOutput("tag", "v1.0.0");
