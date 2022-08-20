@@ -3,7 +3,7 @@ name: Create build artifacts
 on:
   workflow_dispatch: { }
   release:
-    types: [created]
+    types: [published]
 
 jobs:
   release-container:
