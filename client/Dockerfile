@@ -1,8 +1,11 @@
-FROM node:18-alpine AS builder
+FROM node:18-alpine AS base
 
 WORKDIR /usr/src/app
 
 RUN apk add --no-cache python3 make gcc g++
+
+
+FROM base AS builder
 
 COPY package-lock.json package.json ./
 
@@ -13,9 +16,13 @@ COPY . .
 
 RUN npm run build
 
+
 FROM builder as dev
 
 VOLUME /usr/src/app
+COPY --chmod=554 .docker/dev-entrypoint.sh /bin/entrypoint.sh
+
+ENTRYPOINT ["/bin/entrypoint.sh"]
 CMD ["npm", "start"]
 
 
@@ -23,6 +30,6 @@ FROM nginx:1.23-alpine
 
 EXPOSE 8080
 
-COPY nginx/templates /etc/nginx/templates
+COPY .docker/nginx /etc/nginx/templates
 
 COPY --from=builder /usr/src/app/dist /srv/app

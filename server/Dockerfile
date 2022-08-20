@@ -6,10 +6,12 @@ COPY . .
 
 RUN --mount=type=cache,target=/deno-dir/deps \
   deno compile \
-    --import-map ./import-map.json \
-    --allow-net --allow-env --allow-read \
-    --output /usr/local/bin/server \
-      src/bin/server.ts
+  --import-map ./import-map.json \
+  --allow-net --allow-env --allow-read \
+  --output /usr/local/bin/server \
+  src/bin/server.ts
+
+FROM builder as dev
 
 EXPOSE 8080
 CMD ["run", "--import-map=./import-map.json","--allow-net", "--allow-env", "--allow-read", "--watch", "src/bin/server.ts"]
