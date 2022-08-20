@@ -4,8 +4,7 @@
     "recommendations": ["skellock.just"]
   },
   "settings": {
-    "deno.importMap": "./server/import-map.json",
-    "deno.enablePaths": ["./server"],
+    "deno.importMap": "./import-map.json",
     "editor.formatOnSave": true,
     "files.exclude": {
       "**/.git": true,

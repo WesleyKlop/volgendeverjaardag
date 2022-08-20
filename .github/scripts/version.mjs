@@ -32,8 +32,6 @@ export default async function determineNextVersion({ context, core, github }) {
     })
     .catch((r) => r);
 
-  console.log(response);
-
   if (response.status !== 200) {
     console.log("No previous release found, going to v1.0.0");
     core.setOutput("tag", "v1.0.0");
@@ -41,7 +39,7 @@ export default async function determineNextVersion({ context, core, github }) {
     return;
   }
 
-  const currentVersion = tag_name
+  const currentVersion = response.data.tag_name
     .match(SEMVER_REGEX)
     .slice(1, 4)
     .map((v) => parseInt(v, 10));

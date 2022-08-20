@@ -1,5 +1,6 @@
 {
   "deno.codeLens.test": true,
+  "deno.enablePaths": ["."],
   "[typescript]": {
     "editor.defaultFormatter": "denoland.vscode-deno"
   }
