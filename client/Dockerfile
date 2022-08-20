@@ -17,13 +17,15 @@ COPY . .
 RUN npm run build
 
 
-FROM builder as dev
+FROM base as dev
 
 VOLUME /usr/src/app
 COPY --chmod=554 .docker/dev-entrypoint.sh /bin/entrypoint.sh
 
+ENV PORT 8080
+
 ENTRYPOINT ["/bin/entrypoint.sh"]
-CMD ["npm", "start"]
+CMD ["npm", "start" ]
 
 
 FROM nginx:1.23-alpine
