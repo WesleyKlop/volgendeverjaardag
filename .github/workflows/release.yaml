@@ -33,7 +33,7 @@ jobs:
             await determineNextVersion({ context, core, github })
       - uses: softprops/action-gh-release@v1
         with:
-          prerelease: true
+          prerelease: false
           name: ${{ steps.version.outputs.name }}
           tag_name: ${{ steps.version.outputs.tag }} 
           generate_release_notes: true
