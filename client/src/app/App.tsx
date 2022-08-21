@@ -16,14 +16,14 @@ export const App = () => {
   }, [])
 
   return (
-    <main className="grid gap-4 p-4">
+    <main className="grid gap-4 p-4 max-w-screen-sm mx-auto">
       <h1 className="text-4xl text-center font-title text-black">Wie is er ookalweer jarig?</h1>
 
       {currentView === 'view' && !person && (
         <>
           <NextBirthdayForm onResult={(r) => setPerson(r)} />
 
-          <p>
+          <p className="text-slate-800">
             De volgende verjaardag in jouw vriendengroep snel vinden?&nbsp;
             <a
               className="text-blue-500 hover:text-blue-600"
