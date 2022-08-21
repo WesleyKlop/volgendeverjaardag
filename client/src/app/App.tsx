@@ -39,7 +39,7 @@ export const App = () => {
       {currentView === 'join' && <JoinBirthdayForm onFinished={() => setCurrentView('view')} />}
       {person && <BirthDayResult person={person} />}
       {(currentView !== 'view' || person) && (
-        <a className="text-blue-500 hover:text-blue-600" href="#" onClick={() => reset()}>
+        <a className="text-blue-500 hover:text-blue-600 mr-auto" href="#" onClick={() => reset()}>
           ← terug
         </a>
       )}
