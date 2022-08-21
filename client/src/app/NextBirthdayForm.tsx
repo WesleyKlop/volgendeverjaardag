@@ -1,6 +1,9 @@
 import React, { useState, useCallback, FormEvent } from 'react'
-import { fetchNextBirthday, NextBirthday } from '../api'
-import { Birthday } from '../birthday'
+import { fetchNextBirthday, NextBirthday } from '../lib/api'
+import { MIN_CODE_LENGTH } from '../lib/config'
+import { useFormValidity } from '../lib/hooks'
+import { Button } from './Button'
+import { Input } from './Input'
 
 type NextBirthdayFormProps = {
   onResult: (result: NextBirthday | null) => void
@@ -16,21 +19,26 @@ export const NextBirthdayForm = (props: NextBirthdayFormProps) => {
     },
     [code],
   )
+  const { formRef, isValid } = useFormValidity([code])
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label htmlFor="code-input">Jouw groepscode</label>
-      <input
-        className="px-2 py-1 rounded-sm border mx-2"
-        placeholder="jouw-code"
+    <form ref={formRef} onSubmit={handleSubmit} className="flex flex-col gap-6">
+      <Input
         id="code-input"
-        type="text"
+        label="Jouw groepscode"
+        setValue={(v) => setCode(v)}
+        required
+        minLength={MIN_CODE_LENGTH}
         autoComplete="off"
         autoFocus
+        type="text"
         value={code}
-        onChange={(e) => setCode(e.currentTarget.value)}
+        inputMode="numeric"
       />
-      <button type="submit">Feest!</button>
+
+      <Button type="submit" disabled={!isValid}>
+        Feest{isValid ? '! 🥳' : '?'}
+      </Button>
     </form>
   )
 }

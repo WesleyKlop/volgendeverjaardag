@@ -1,44 +1,47 @@
-import React, { useState } from 'react'
-import { NextBirthday } from '../api'
+import React, { useCallback, useState } from 'react'
+import { NextBirthday } from '../lib/api'
+import { BirthDayResult } from './BirthdayResult'
 import { JoinBirthdayForm } from './JoinBirthdayForm'
 import { NextBirthdayForm } from './NextBirthdayForm'
 
 type ViewType = 'join' | 'view'
 
-const formatDate = (date: string) => {
-  const formatter = new Intl.DateTimeFormat(undefined, { dateStyle: 'long' })
-  return formatter.format(new Date(date))
-}
-
 export const App = () => {
   const [person, setPerson] = useState<NextBirthday | null>()
   const [currentView, setCurrentView] = useState<ViewType>('view')
 
+  const reset = useCallback(() => {
+    setCurrentView('view')
+    setPerson(null)
+  }, [])
+
   return (
-    <main>
-      <h1 className="text-4xl">Wie is er ookalweer jarig?</h1>
+    <main className="grid gap-4 p-4">
+      <h1 className="text-4xl text-center font-title text-black">Wie is er ookalweer jarig?</h1>
 
       {currentView === 'view' && !person && (
         <>
           <NextBirthdayForm onResult={(r) => setPerson(r)} />
-          <div>
-            <p>De volgende verjaardag in jouw groep snel vinden?</p>
-            <a href="#" onClick={() => setCurrentView('join')}>
-              registreer
+
+          <p>
+            De volgende verjaardag in jouw vriendengroep snel vinden?&nbsp;
+            <a
+              className="text-blue-500 hover:text-blue-600"
+              href="#"
+              onClick={() => setCurrentView('join')}
+            >
+              Registreer
             </a>
-          </div>
+            .
+          </p>
         </>
       )}
-      {currentView === 'join' && (
-        <>
-          <JoinBirthdayForm onFinished={() => setCurrentView('view')} />
-        </>
-      )}
-      {person && (
-        <div id="result">
-          {person.name} is op {formatDate(person.next_birthday)} jarig en wordt dan {person.new_age}
-          !
-        </div>
+      {currentView === 'join' && <JoinBirthdayForm onFinished={() => setCurrentView('view')} />}
+      {person && <BirthDayResult person={person} />}
+      {(currentView !== 'view' || person) && (
+        <a className="text-blue-500 hover:text-blue-600" href="#" onClick={() => reset()}>
+          ← terug
+        </a>
       )}
     </main>
   )

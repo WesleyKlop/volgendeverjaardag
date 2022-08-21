@@ -1,4 +1,4 @@
-import { findByCode } from "../models/Birthday.ts";
+import { findByCode, findNextByCode } from "../models/Birthday.ts";
 import { getHandler, jsonResponse, postHandler } from "../utils/http.ts";
 
 const getGroupMembers = getHandler(async (_req, ctx, client) => {
@@ -21,12 +21,6 @@ const getGroupMembers = getHandler(async (_req, ctx, client) => {
   return jsonResponse(birthdays, 200);
 });
 
-type NextBirthday = {
-  name: string;
-  birth_date: string;
-  new_age: number;
-  next_birthday: string;
-};
 const getNextBirthday = getHandler(async (req, ctx, client) => {
   const { code } = ctx.params;
 
@@ -36,24 +30,12 @@ const getNextBirthday = getHandler(async (req, ctx, client) => {
     }, 404);
   }
 
-  const { rows } = await client.queryObject<NextBirthday>`
-    SELECT
-      name,
-      birth_date,
-      extract(year FROM age(birth_date)) + 1 AS new_age,
-      cast(birth_date + ((extract(year FROM age(birth_date)) + 1) * interval '1' year) AS date) AS next_birthday
-    FROM
-      birthdays
-    WHERE
-      code = ${code}
-    ORDER BY next_birthday ASC
-    LIMIT 1
-`;
+  const nextBirthday = await findNextByCode(code, client);
 
-  if (rows.length === 0) {
+  if (!nextBirthday) {
     return jsonResponse(null, 404);
   }
-  return jsonResponse(rows[0]);
+  return jsonResponse(nextBirthday);
 });
 
 const registerBirthday = postHandler(async (req, ctx, client) => {

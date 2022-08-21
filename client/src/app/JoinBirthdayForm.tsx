@@ -1,5 +1,9 @@
-import React, { useState, useCallback, FormEvent } from 'react'
-import { submitBirthday } from '../api'
+import React, { useState, useCallback, FormEvent, useEffect, useRef } from 'react'
+import { submitBirthday } from '../lib/api'
+import { MIN_CODE_LENGTH } from '../lib/config'
+import { useFormValidity } from '../lib/hooks'
+import { Button } from './Button'
+import { Input } from './Input'
 
 type JoinBirthdayFormProps = {
   onFinished: () => void
@@ -17,47 +21,56 @@ export const JoinBirthdayForm = (props: JoinBirthdayFormProps) => {
         birthDate,
         code,
       })
-      // props.onFinished()
+      props.onFinished()
     },
     [name, birthDate, code],
   )
+  const { formRef, isValid } = useFormValidity([name, birthDate, code])
 
   return (
-    <form onSubmit={handleSubmit} className="grid grid-cols-2 gap-y-2 gap-x-1">
-      <label htmlFor="name-input">Jouw naam</label>
-      <input
-        className="px-2 py-1 rounded-sm border mx-2"
-        placeholder="Jan"
+    <form ref={formRef} onSubmit={handleSubmit} className="flex flex-col gap-y-2 gap-x-1">
+      <p>
+        Wanneer je je aanmeld kan iedereen via de code die je invult er achter komen wanneer jij als
+        volgende jarig bent.
+      </p>
+      <Input
         id="name-input"
-        type="text"
+        label="Jouw naam"
+        placeholder="Jan"
         autoComplete="given-name"
         value={name}
-        onChange={(e) => setName(e.currentTarget.value)}
+        setValue={(v) => setName(v)}
+        required
+        type="text"
       />
-      <label htmlFor="birth-input">Jouw geboortedatum</label>
-      <input
-        className="px-2 py-1 rounded-sm border mx-2"
-        placeholder="26-7-1986"
+
+      <Input
         id="birth-input"
-        type="date"
+        label="Jouw geboortedatum"
+        placeholder="26-7-1986"
         autoComplete="bday"
         value={birthDate}
-        onChange={(e) => setBirthDate(e.currentTarget.value)}
+        setValue={(v) => setBirthDate(v)}
+        required
+        type="date"
       />
-      <label htmlFor="code-input">Jouw groepscode</label>
-      <input
-        className="px-2 py-1 rounded-sm border mx-2"
-        placeholder="jouw-code"
+
+      <Input
         id="code-input"
-        type="text"
+        label="Jouw groepscode"
+        setValue={(v) => setCode(v)}
+        required
+        minLength={MIN_CODE_LENGTH}
         autoComplete="off"
         autoFocus
+        type="text"
         value={code}
-        onChange={(e) => setCode(e.currentTarget.value)}
+        inputMode="numeric"
       />
-      <button type="submit" className="col-span-2">
-        Feest!
-      </button>
+
+      <Button type="submit" disabled={!isValid}>
+        Feest{isValid ? '! 🥳' : '?'}
+      </Button>
     </form>
   )
 }

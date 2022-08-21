@@ -11,6 +11,7 @@
   "author": "Wesley Klop <wesley19097@gmail.com>",
   "license": "MIT",
   "devDependencies": {
+    "@tailwindcss/forms": "^0.5.2",
     "@types/react": "^18.0.17",
     "@types/react-dom": "^18.0.6",
     "http-proxy-middleware": "^2.0.6",
@@ -21,6 +22,7 @@
     "tailwindcss": "^3.1.8"
   },
   "dependencies": {
+    "classnames": "^2.3.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   }

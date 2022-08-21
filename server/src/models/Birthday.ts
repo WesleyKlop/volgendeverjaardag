@@ -8,6 +8,13 @@ interface IBirthday {
   getId(): string;
 }
 
+type NextBirthday = {
+  name: string;
+  birth_date: string;
+  new_age: number;
+  next_birthday: string;
+};
+
 export type RawBirthday = Omit<IBirthday, "birthDate"> & {
   id: string;
   birth_date: string;
@@ -51,4 +58,38 @@ export const findByCode = async (code: string, client: PoolClient) => {
   return results.rows.map((row: RawBirthday) => {
     return new Birthday(row.id, row.code, row.name, new Date(row.birth_date));
   });
+};
+
+export const findNextByCode = async (
+  code: string,
+  client: PoolClient,
+): Promise<NextBirthday | undefined> => {
+  const { rows } = await client.queryObject<NextBirthday>`
+SELECT
+    name,
+    age,
+    age + 1 AS new_age,
+    birth_date,
+    CASE WHEN curr_birthday = CURRENT_DATE THEN
+        curr_birthday
+    ELSE
+        (curr_birthday + interval '1 year')::date
+    END AS next_birthday
+FROM (
+    SELECT
+        id,
+        name,
+        birth_date,
+        extract(year FROM age(birth_date)) AS age,
+        cast(birth_date + (extract(year FROM age(birth_date)) * interval '1' year) AS date) AS curr_birthday
+    FROM
+        birthdays
+    WHERE
+        code = ${code}) AS base
+ORDER BY
+    next_birthday ASC
+LIMIT 1;
+`;
+
+  return rows[0];
 };
