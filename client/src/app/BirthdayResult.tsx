@@ -1,5 +1,6 @@
 import React from 'react'
 import { NextBirthday } from '../lib/api'
+import { confetti } from '../lib/confetti'
 import { formatDate, isSameDate } from '../lib/date'
 
 type Props = {
@@ -12,7 +13,11 @@ export const BirthDayResult: React.FC<Props> = ({ person }) => (
     </p>
     {isSameDate(new Date(person.next_birthday)) && (
       <p className="text-xl">
-        🎉🥳 <span className="rainbow-text">En dat is vandaag! Van harte gefeliciteerd!</span> 🥳🎉
+        🎉🥳&nbsp;
+        <button className="rainbow-text" type="button" onClick={() => confetti()}>
+          En dat is vandaag! Van harte gefeliciteerd!
+        </button>
+        &nbsp;🥳🎉
       </p>
     )}
   </div>

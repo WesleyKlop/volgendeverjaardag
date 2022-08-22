@@ -1,5 +1,7 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { NextBirthday } from '../lib/api'
+import { confetti } from '../lib/confetti'
+import { isSameDate } from '../lib/date'
 import { BirthDayResult } from './BirthdayResult'
 import { JoinBirthdayForm } from './JoinBirthdayForm'
 import { NextBirthdayForm } from './NextBirthdayForm'
@@ -14,6 +16,12 @@ export const App = () => {
     setCurrentView('view')
     setPerson(null)
   }, [])
+
+  useEffect(() => {
+    if (person && isSameDate(new Date(person.next_birthday))) {
+      confetti()
+    }
+  }, [person])
 
   return (
     <main className="grid gap-4 p-4 max-w-screen-sm mx-auto">

@@ -33,7 +33,7 @@ export const NextBirthdayForm = (props: NextBirthdayFormProps) => {
         autoFocus
         type="text"
         value={code}
-        inputMode="numeric"
+        placeholder="de-musketiers"
       />
 
       <Button type="submit" disabled={!isValid}>

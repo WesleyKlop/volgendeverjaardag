@@ -65,7 +65,6 @@ export const JoinBirthdayForm = (props: JoinBirthdayFormProps) => {
         autoFocus
         type="text"
         value={code}
-        inputMode="numeric"
       />
 
       <Button type="submit" disabled={!isValid}>
