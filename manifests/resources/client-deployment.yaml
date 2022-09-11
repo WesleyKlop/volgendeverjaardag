@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: volgendeverjaardag-client
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: volgendeverjaardag-client
+      app.kubernetes.io/component: client
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: volgendeverjaardag-client
+        app.kubernetes.io/component: client
+    spec:
+      containers:
+        - name: client
+          image: ghcr.io/wesleyklop/volgendeverjaardag.nl-client:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+              name: http
