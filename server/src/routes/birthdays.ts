@@ -10,52 +10,52 @@ export const registerBirthDays = (server: Server) => {
   server.get(
     "/api/birthdays/:code",
     res("json"),
-    ({ params, res: resp }) =>
+    (ctx) =>
       withConnection(async (client) => {
-        const { code } = params;
+        const { code } = ctx.params;
 
         if (typeof code !== "string") {
-          resp.body = {
+          ctx.res.body = {
             message: "Invalid code",
           };
-          resp.status = 404;
+          ctx.res.status = 404;
           return;
         }
         const birthdays = await findByCode(code, client);
 
         if (birthdays.length === 0) {
-          resp.status = 404;
+          ctx.res.status = 404;
           return;
         }
 
-        resp.body = birthdays;
-        resp.status = 200;
+        ctx.res.body = birthdays;
+        ctx.res.status = 200;
       }),
   );
 
   server.get(
     "/api/birthdays/:code/next",
     res("json"),
-    ({ params, res: resp }) =>
+    (ctx) =>
       withConnection(async (client) => {
-        const { code } = params;
+        const { code } = ctx.params;
 
         if (typeof code !== "string") {
-          resp.body = {
+          ctx.res.body = {
             message: "Invalid code",
           };
-          resp.status = 404;
+          ctx.res.status = 404;
           return;
         }
         const nextBirthday = await findNextByCode(code, client);
 
         if (!nextBirthday) {
-          resp.status = 404;
+          ctx.res.status = 404;
           return;
         }
 
-        resp.body = nextBirthday;
-        resp.status = 200;
+        ctx.res.body = nextBirthday;
+        ctx.res.status = 200;
       }),
   );
 
@@ -69,16 +69,16 @@ export const registerBirthDays = (server: Server) => {
         try {
           body = await ctx.req.json();
         } catch {
-          ctx.resp.status = 422;
+          ctx.res.status = 422;
           return;
         }
 
         const response = await createBirthDay(body, client);
-        if (response) {
+        if (!response) {
           throw "Failed to save birthday";
         }
 
-        ctx.resp.body = response;
+        ctx.res.body = response;
       }),
   );
 };
