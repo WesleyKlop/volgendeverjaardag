@@ -1,73 +1,84 @@
-import { findByCode, findNextByCode } from "../models/Birthday.ts";
-import { getHandler, jsonResponse, postHandler } from "../utils/http.ts";
+import { req, res, Server } from "@deno/faster";
+import {
+  createBirthDay,
+  findByCode,
+  findNextByCode,
+} from "../models/Birthday.ts";
+import { withConnection } from "../utils/db.ts";
 
-const getGroupMembers = getHandler(async (_req, ctx, client) => {
-  const { code } = ctx.params;
+export const registerBirthDays = (server: Server) => {
+  server.get(
+    "/api/birthdays/:code",
+    res("json"),
+    ({ params, res: resp }) =>
+      withConnection(async (client) => {
+        const { code } = params;
 
-  if (typeof code !== "string") {
-    return jsonResponse({
-      message: "Invalid code",
-    }, 404);
-  }
+        if (typeof code !== "string") {
+          resp.body = {
+            message: "Invalid code",
+          };
+          resp.status = 404;
+          return;
+        }
+        const birthdays = await findByCode(code, client);
 
-  const birthdays = await findByCode(code as string, client);
+        if (birthdays.length === 0) {
+          resp.status = 404;
+          return;
+        }
 
-  if (birthdays.length === 0) {
-    return new Response(undefined, {
-      status: 404,
-    });
-  }
+        resp.body = birthdays;
+        resp.status = 200;
+      }),
+  );
 
-  return jsonResponse(birthdays, 200);
-});
+  server.get(
+    "/api/birthdays/:code/next",
+    res("json"),
+    ({ params, res: resp }) =>
+      withConnection(async (client) => {
+        const { code } = params;
 
-const getNextBirthday = getHandler(async (req, ctx, client) => {
-  const { code } = ctx.params;
+        if (typeof code !== "string") {
+          resp.body = {
+            message: "Invalid code",
+          };
+          resp.status = 404;
+          return;
+        }
+        const nextBirthday = await findNextByCode(code, client);
 
-  if (typeof code !== "string") {
-    return jsonResponse({
-      message: "Invalid code",
-    }, 404);
-  }
+        if (!nextBirthday) {
+          resp.status = 404;
+          return;
+        }
 
-  const nextBirthday = await findNextByCode(code, client);
+        resp.body = nextBirthday;
+        resp.status = 200;
+      }),
+  );
 
-  if (!nextBirthday) {
-    return jsonResponse(null, 404);
-  }
-  return jsonResponse(nextBirthday);
-});
+  server.post(
+    "/api/birthdays",
+    req("json"),
+    res("json"),
+    (ctx) =>
+      withConnection(async (client) => {
+        let body;
+        try {
+          body = await ctx.req.json();
+        } catch {
+          ctx.resp.status = 422;
+          return;
+        }
 
-const registerBirthday = postHandler(async (req, ctx, client) => {
-  let params;
-  try {
-    params = await req.json();
-  } catch {
-    return new Response(null, { status: 422 });
-  }
+        const response = await createBirthDay(body, client);
+        if (response) {
+          throw "Failed to save birthday";
+        }
 
-  const response = await client.queryObject<{ id: string }>`
-    INSERT INTO birthdays (name, code, birth_date) 
-      VALUES (${params.name}, ${params.code}, ${params.birthDate})
-      RETURNING id;
-  `;
-
-  if (response.rowCount !== 1) {
-    console.log(response);
-    return new Response(null, { status: 500 });
-  }
-  const { id } = response.rows[0];
-
-  return jsonResponse({
-    id,
-    name: params.name,
-    birthDate: params.birthDate,
-    code: params.code,
-  });
-});
-
-export default {
-  "/api/birthdays/:code": getGroupMembers,
-  "/api/birthdays/:code/next": getNextBirthday,
-  "/api/birthdays": registerBirthday,
+        ctx.resp.body = response;
+      }),
+  );
 };

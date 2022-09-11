@@ -6,11 +6,11 @@ import { Input } from '../app/Input'
 import { useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 
-type FormValues = { name: string, birthDate: Date, code: string }
+type FormValues = { name: string; birthDate: Date; code: string }
 
 export const JoinBirthdayForm = () => {
   const { handleSubmit, register, formState } = useForm<FormValues>({
-    mode: 'onChange'
+    mode: 'onChange',
   })
   const navigate = useNavigate()
 
@@ -53,7 +53,7 @@ export const JoinBirthdayForm = () => {
       <Input
         {...register('code', {
           required: true,
-          minLength: MIN_CODE_LENGTH
+          minLength: MIN_CODE_LENGTH,
         })}
         id="code-input"
         label="Jouw groepscode"

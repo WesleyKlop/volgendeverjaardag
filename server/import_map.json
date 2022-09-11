@@ -2,10 +2,9 @@
   "imports": {
     "@deno/x/postgres": "https://deno.land/x/postgres@v0.16.1/mod.ts",
     "@deno/x/router": "https://deno.land/x/http_router@1.1.0/mod.ts",
-    "@deno/http/": "https://deno.land/std@0.152.0/http/",
-    "@deno/http": "https://deno.land/std@0.152.0/http/mod.ts",
     "@deno/datetime": "https://deno.land/std@0.152.0/datetime/mod.ts",
     "@deno/log": "https://deno.land/std@0.152.0/log/mod.ts",
+    "@deno/faster": "https://deno.land/x/faster@v5.7/mod.ts",
     "@moment/luxon": "https://raw.githubusercontent.com/moment/luxon/3.0.1/src/luxon.js"
   }
 }

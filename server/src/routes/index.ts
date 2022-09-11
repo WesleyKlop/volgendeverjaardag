@@ -1,10 +1,8 @@
-import { createRouter } from "@deno/x/router";
-import birthdays from "./birthdays.ts";
-import health from "./health.ts";
+import { Server } from "@deno/faster";
+import { registerBirthDays } from "./birthdays.ts";
+import { registerHealth } from "./health.ts";
 
-const router = createRouter({
-  ...health,
-  ...birthdays,
-});
-
-export default router;
+export const registerRoutes = (server: Server) => {
+  registerHealth(server);
+  registerBirthDays(server);
+};

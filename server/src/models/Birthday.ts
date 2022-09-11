@@ -93,3 +93,30 @@ LIMIT 1;
 
   return rows[0];
 };
+
+export const findById = async (id: string, client: PoolClient) => {
+  const results = await client.queryObject<
+    RawBirthday
+  >`SELECT id, code, name, birth_date FROM birthdays WHERE  = ${id}`;
+
+  if (results.rowCount !== 1) {
+    return;
+  }
+
+  return results.rows.map((row: RawBirthday) => {
+    return new Birthday(row.id, row.code, row.name, new Date(row.birth_date));
+  })[0];
+};
+
+export const createBirthDay = async (body: IBirthday, client: PoolClient) => {
+  const result = await client.queryObject<{ id: string }>`
+          INSERT INTO birthdays (name, code, birth_date) 
+            VALUES (${body.name}, ${body.code}, ${body.birthDate})
+            RETURNING id;
+        `;
+
+  if (result.rowCount !== 1) {
+    return;
+  }
+  return await findById(result.rows[0].id, client);
+};

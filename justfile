@@ -1,15 +1,12 @@
-permissions := "--allow-net --allow-env --allow-read"
-importMap := "--import-map=./import-map.json"
+permissions := "--allow-net --allow-env --allow-read --allow-write"
 
 start-server:
     cd server && deno run \
-      {{ importMap }} \
       {{ permissions }} \
         src/bin/server.ts
 
 compile-server: clean-server
     cd server && deno compile \
-      {{ importMap }} \
       {{ permissions }} \
       --output bin/server \
         src/bin/server.ts

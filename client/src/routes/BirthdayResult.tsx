@@ -45,5 +45,7 @@ export const BirthDayResult: React.FC = () => {
         </p>
       )}
     </div>
-  ) : <div>Niemand gevonden</div>
+  ) : (
+    <div>Niemand gevonden</div>
+  )
 }

@@ -9,8 +9,7 @@ COPY . .
 
 RUN --mount=type=cache,target=/deno-dir/deps \
   deno compile \
-  --import-map ./import-map.json \
-  --allow-net --allow-env --allow-read \
+  --allow-net --allow-env --allow-read --allow-write \
   --output /usr/local/bin/server \
   src/bin/server.ts
 
@@ -18,7 +17,7 @@ RUN --mount=type=cache,target=/deno-dir/deps \
 FROM base as dev
 
 EXPOSE 8080
-CMD ["run", "--import-map=./import-map.json","--allow-net", "--allow-env", "--allow-read", "--watch", "src/bin/server.ts"]
+CMD ["run","--allow-net", "--allow-env", "--allow-read", "--allow-write", "--watch", "src/bin/server.ts"]
 
 FROM gcr.io/distroless/cc
 
