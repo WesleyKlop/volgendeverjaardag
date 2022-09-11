@@ -1,4 +1,4 @@
-import { intoBirthday, RawBirthday } from './birthday'
+import { Birthday, intoBirthday, RawBirthday } from './birthday'
 
 export type NextBirthday = {
   name: string
@@ -23,7 +23,7 @@ export const fetchNextBirthday = async (code: string): Promise<NextBirthday | nu
     .catch(() => null)
 }
 
-type SubmitBirthdayParams = Omit<RawBirthday, 'id'>
+type SubmitBirthdayParams = Omit<Birthday, 'id'>
 export const submitBirthday = async (params: SubmitBirthdayParams) => {
   return await fetch(`/api/birthdays`, {
     method: 'POST',
@@ -41,5 +41,4 @@ export const submitBirthday = async (params: SubmitBirthdayParams) => {
       return Promise.reject()
     })
     .then((b) => intoBirthday(b))
-    .catch(() => null)
 }

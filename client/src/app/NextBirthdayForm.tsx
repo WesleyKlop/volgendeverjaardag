@@ -4,40 +4,39 @@ import { MIN_CODE_LENGTH } from '../lib/config'
 import { useFormValidity } from '../lib/hooks'
 import { Button } from './Button'
 import { Input } from './Input'
+import { useForm } from 'react-hook-form'
+import { useNavigate } from 'react-router-dom'
 
-type NextBirthdayFormProps = {
-  onResult: (result: NextBirthday | null) => void
+type FormValues = {
+  code: string
 }
 
-export const NextBirthdayForm = (props: NextBirthdayFormProps) => {
-  const [code, setCode] = useState('')
-  const handleSubmit = useCallback(
-    async (evt: FormEvent<HTMLFormElement>) => {
-      evt.preventDefault()
-      const nextBirthday = await fetchNextBirthday(code)
-      props.onResult(nextBirthday)
-    },
-    [code],
-  )
-  const { formRef, isValid } = useFormValidity([code])
+export const NextBirthdayForm = () => {
+  const { handleSubmit, register, formState } = useForm<FormValues>({
+    mode: 'onChange',
+  })
+  const navigate = useNavigate()
+
+  const submitForm = handleSubmit(({ code }) => {
+    navigate(`/code/${code}`)
+  })
 
   return (
-    <form ref={formRef} onSubmit={handleSubmit} className="flex flex-col gap-6">
+    <form onSubmit={submitForm} className="flex flex-col gap-6">
       <Input
+        {...register('code', {
+          required: true,
+          minLength: MIN_CODE_LENGTH,
+        })}
         id="code-input"
         label="Jouw groepscode"
-        setValue={(v) => setCode(v)}
-        required
-        minLength={MIN_CODE_LENGTH}
         autoComplete="off"
         autoFocus
         type="text"
-        value={code}
-        placeholder="de-musketiers"
       />
 
-      <Button type="submit" disabled={!isValid}>
-        Feest{isValid ? '! 🥳' : '?'}
+      <Button type="submit" disabled={!formState.isValid}>
+        Feest{formState.isValid ? '! 🥳' : '?'}
       </Button>
     </form>
   )

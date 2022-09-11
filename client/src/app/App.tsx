@@ -2,24 +2,20 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { NextBirthday } from '../lib/api'
 import { confetti } from '../lib/confetti'
 import { isSameDate } from '../lib/date'
-import { BirthDayResult } from './BirthdayResult'
-import { JoinBirthdayForm } from './JoinBirthdayForm'
+import { BirthDayResult } from '../routes/BirthdayResult'
+import { JoinBirthdayForm } from '../routes/JoinBirthdayForm'
 import { NextBirthdayForm } from './NextBirthdayForm'
+import { Link, Outlet, useLocation } from 'react-router-dom'
 
 type ViewType = 'join' | 'view'
 
 export const App = () => {
   const [person, setPerson] = useState<NextBirthday | null>()
-  const [currentView, setCurrentView] = useState<ViewType>('view')
-
-  const reset = useCallback(() => {
-    setCurrentView('view')
-    setPerson(null)
-  }, [])
+  const location = useLocation()
 
   useEffect(() => {
     if (person && isSameDate(new Date(person.next_birthday))) {
-      confetti()
+      void confetti()
     }
   }, [person])
 
@@ -27,29 +23,12 @@ export const App = () => {
     <main className="grid gap-4 p-4 max-w-screen-sm mx-auto">
       <h1 className="text-4xl text-center font-title text-black">Wie is er ookalweer jarig?</h1>
 
-      {currentView === 'view' && !person && (
-        <>
-          <NextBirthdayForm onResult={(r) => setPerson(r)} />
+      <Outlet />
 
-          <p className="text-slate-800">
-            De volgende verjaardag in jouw vriendengroep snel vinden?&nbsp;
-            <a
-              className="text-blue-500 hover:text-blue-600"
-              href="#"
-              onClick={() => setCurrentView('join')}
-            >
-              Registreer
-            </a>
-            .
-          </p>
-        </>
-      )}
-      {currentView === 'join' && <JoinBirthdayForm onFinished={() => setCurrentView('view')} />}
-      {person && <BirthDayResult person={person} />}
-      {(currentView !== 'view' || person) && (
-        <a className="text-blue-500 hover:text-blue-600 mr-auto" href="#" onClick={() => reset()}>
+      {location.pathname !== '/' && (
+        <Link className="text-blue-500 hover:text-blue-600 mr-auto" to="/">
           ← terug
-        </a>
+        </Link>
       )}
     </main>
   )
