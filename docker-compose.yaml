@@ -15,7 +15,7 @@ services:
     image: ghcr.io/wesleyklop/volgendeverjaardag.nl-server:latest
     build:
       context: server
-      target: dev
+      target: ${TARGET-dev}
     expose:
       - 8080
     environment:
@@ -28,7 +28,7 @@ services:
     image: ghcr.io/wesleyklop/volgendeverjaardag.nl-client:latest
     build:
       context: client
-      target: dev
+      target: ${TARGET-dev}
     ports:
       - 8081:8080
     environment:
