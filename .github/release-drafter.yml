@@ -18,7 +18,10 @@ version-resolver:
   minor:
     labels:
       - minor
+      - enhancement
   patch:
     labels:
       - patch
+      - dependencies
+      - bug
   default: patch
