@@ -25,3 +25,8 @@ version-resolver:
       - dependencies
       - bug
   default: patch
+
+template: |
+  ## Changes
+
+  $CHANGES
