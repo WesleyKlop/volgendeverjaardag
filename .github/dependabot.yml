@@ -1,18 +1,27 @@
 version: 2
+
 updates:
   - package-ecosystem: github-actions
+    reviewers:
+      - WesleyKlop
     directory: '/'
     schedule:
       interval: 'daily'
   - package-ecosystem: docker
+    reviewers:
+      - WesleyKlop
     directory: '/server'
     schedule:
       interval: daily
   - package-ecosystem: docker
+    reviewers:
+      - WesleyKlop
     directory: '/client'
     schedule:
       interval: daily
   - package-ecosystem: npm
+    reviewers:
+      - WesleyKlop
     directory: '/client'
     schedule:
       interval: daily
