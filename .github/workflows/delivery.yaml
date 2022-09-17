@@ -9,6 +9,8 @@ jobs:
   release-container:
     name: Build and push image ${{ matrix.app }}
     runs-on: ubuntu-22.04
+    outputs:
+      image: ${{ steps.meta.outputs.tags[0] }}
     permissions:
       packages: write
       contents: read
@@ -51,3 +53,20 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+  update-kustomize:
+    name: Update kustomize file
+    runs-on: ubuntu-22.04
+    needs:
+      - release-container
+    outputs:
+      image: ${{ steps.meta.outputs.tags[0] }}
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v3
+      - run: echo "${{ toJSON(needs.release-container) }}"
+      - run: kustomize edit set image "${{ needs.release-container[0].outputs.image }}"
+        working-directory: manifests
+      - run: kustomize edit set image "${{ needs.release-container[1].outputs.image }}"
+        working-directory: manifests
+
