@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: client
-          image: ghcr.io/wesleyklop/volgendeverjaardag.nl-client:latest
+          image: ghcr.io/wesleyklop/volgendeverjaardag-client:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 8080

@@ -13,7 +13,7 @@ labels:
     includeSelectors: true
 
 images:
-  - name: ghcr.io/wesleyklop/volgendeverjaardag.nl-client
-    newTag: 1.1.2
-  - name: ghcr.io/wesleyklop/volgendeverjaardag.nl-server
-    newTag: 1.1.2
+  - name: ghcr.io/wesleyklop/volgendeverjaardag-client
+    newTag: 1.1.3
+  - name: ghcr.io/wesleyklop/volgendeverjaardag-server
+    newTag: 1.1.3
