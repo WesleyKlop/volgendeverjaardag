@@ -10,7 +10,7 @@ jobs:
     name: Build and push image ${{ matrix.app }}
     runs-on: ubuntu-22.04
     outputs:
-      image: ${{ steps.meta.outputs.tags[0] }}
+      image: ${{ steps.meta.outputs.json.tags[0] }}
     permissions:
       packages: write
       contents: read
@@ -62,7 +62,7 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v3
-      - run: echo "${{ toJSON(needs.release-container) }}"
+      - run: echo "${{ toJSON(needs.release-container.outputs) }}"
       - run: kustomize edit set image "${{ needs.release-container[0].outputs.image }}"
         working-directory: manifests
       - run: kustomize edit set image "${{ needs.release-container[1].outputs.image }}"
