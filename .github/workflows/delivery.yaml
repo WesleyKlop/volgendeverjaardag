@@ -58,8 +58,6 @@ jobs:
     runs-on: ubuntu-22.04
     needs:
       - release-container
-    outputs:
-      image: ${{ steps.meta.outputs.tags[0] }}
     permissions:
       contents: write
     steps:
