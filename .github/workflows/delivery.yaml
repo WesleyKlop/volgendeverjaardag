@@ -63,6 +63,8 @@ jobs:
       - uses: docker/metadata-action@v4.0.1
         id: meta
         with:
+          flavor: |
+            latest=false
           images: |
             ghcr.io/${{ github.repository }}-client
             ghcr.io/${{ github.repository }}-server
