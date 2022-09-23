@@ -8,6 +8,7 @@ type Params = {
   code: string
 }
 export const BirthDayResult: React.FC = () => {
+  const [isLoading, setLoading] = useState(true)
   const [person, setPerson] = useState<NextBirthday>()
   const [isToday, setToday] = useState(false)
   const { code } = useParams<Params>()
@@ -19,6 +20,7 @@ export const BirthDayResult: React.FC = () => {
       return
     }
     const result = await fetchNextBirthday(code)
+    setLoading(false)
 
     if (result) {
       setPerson(result)
@@ -28,14 +30,20 @@ export const BirthDayResult: React.FC = () => {
 
   useEffect(() => {
     if (typeof code === 'string') {
+      setLoading(true)
       void updatePerson(code)
     }
   }, [code])
 
+  if (isLoading) {
+    return <div>Laden...</div>
+  }
+
   return person ? (
     <div className="text-center">
       <p>
-        {person.name} is op {formatDate(person.next_birthday)} jarig en wordt dan {isToday ? person.curr_age : person.new_age}!
+        {person.name} is op {formatDate(person.next_birthday)} jarig en wordt dan{' '}
+        {isToday ? person.curr_age : person.new_age}!
       </p>
       {isToday && (
         <p className="text-xl">
