@@ -33,6 +33,7 @@ services:
       - 8081:8080
     environment:
       API_HOST: server
+      API_PORT: 8080
     restart: on-failure
     depends_on:
       - server
