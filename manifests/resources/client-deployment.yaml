@@ -3,6 +3,7 @@ kind: Deployment
 metadata:
   name: volgendeverjaardag-client
 spec:
+  revisionHistoryLimit: 3
   selector:
     matchLabels:
       app.kubernetes.io/name: volgendeverjaardag-client
@@ -24,4 +25,4 @@ spec:
             - name: API_HOST
               value: volgendeverjaardag-server
             - name: API_PORT
-              value: '8080'
+              value: "8080"

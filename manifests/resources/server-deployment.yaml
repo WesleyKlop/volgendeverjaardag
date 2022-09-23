@@ -3,6 +3,7 @@ kind: Deployment
 metadata:
   name: volgendeverjaardag-server
 spec:
+  revisionHistoryLimit: 3
   selector:
     matchLabels:
       app.kubernetes.io/name: volgendeverjaardag-server
