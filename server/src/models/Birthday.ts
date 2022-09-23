@@ -11,6 +11,7 @@ type NextBirthday = {
   birth_date: string;
   new_age: number;
   next_birthday: string;
+  curr_age: number;
 };
 
 export type RawBirthday = Omit<IBirthday, "birthDate"> & {
