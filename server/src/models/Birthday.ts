@@ -67,7 +67,7 @@ export const findNextByCode = async (
   const { rows } = await client.queryObject<NextBirthday>`
 SELECT
     name,
-    age,
+    age AS curr_age,
     age + 1 AS new_age,
     birth_date,
     CASE WHEN curr_birthday = CURRENT_DATE THEN

@@ -9,6 +9,7 @@ type Params = {
 }
 export const BirthDayResult: React.FC = () => {
   const [person, setPerson] = useState<NextBirthday>()
+  const [isToday, setToday] = useState(false)
   const { code } = useParams<Params>()
   const navigate = useNavigate()
 
@@ -21,6 +22,7 @@ export const BirthDayResult: React.FC = () => {
 
     if (result) {
       setPerson(result)
+      setToday(isSameDate(new Date(result.next_birthday)))
     }
   }
 
@@ -33,9 +35,9 @@ export const BirthDayResult: React.FC = () => {
   return person ? (
     <div className="text-center">
       <p>
-        {person.name} is op {formatDate(person.next_birthday)} jarig en wordt dan {person.new_age}!
+        {person.name} is op {formatDate(person.next_birthday)} jarig en wordt dan {isToday ? person.curr_age : person.new_age}!
       </p>
-      {isSameDate(new Date(person.next_birthday)) && (
+      {isToday && (
         <p className="text-xl">
           🎉🥳&nbsp;
           <button className="rainbow-text" type="button" onClick={() => confetti()}>

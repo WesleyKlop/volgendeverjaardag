@@ -5,6 +5,7 @@ export type NextBirthday = {
   birth_date: string
   new_age: number
   next_birthday: string
+  curr_age: number
 }
 export const fetchNextBirthday = async (code: string): Promise<NextBirthday | null> => {
   return await fetch(`/api/birthdays/${encodeURIComponent(code)}/next`, {
