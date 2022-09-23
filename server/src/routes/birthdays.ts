@@ -1,37 +1,33 @@
 import { req, res, Server } from "@deno/faster";
-import {
-  createBirthDay,
-  findByCode,
-  findNextByCode,
-} from "../models/Birthday.ts";
+import { createBirthDay, findNextByCode } from "../models/Birthday.ts";
 import { withConnection } from "../utils/db.ts";
 
 export const registerBirthDays = (server: Server) => {
-  server.get(
-    "/api/birthdays/:code",
-    res("json"),
-    (ctx) =>
-      withConnection(async (client) => {
-        const { code } = ctx.params;
+  // server.get(
+  //   "/api/birthdays/:code",
+  //   res("json"),
+  //   (ctx) =>
+  //     withConnection(async (client) => {
+  //       const { code } = ctx.params;
 
-        if (typeof code !== "string") {
-          ctx.res.body = {
-            message: "Invalid code",
-          };
-          ctx.res.status = 404;
-          return;
-        }
-        const birthdays = await findByCode(code, client);
+  //       if (typeof code !== "string") {
+  //         ctx.res.body = {
+  //           message: "Invalid code",
+  //         };
+  //         ctx.res.status = 404;
+  //         return;
+  //       }
+  //       const birthdays = await findByCode(code, client);
 
-        if (birthdays.length === 0) {
-          ctx.res.status = 404;
-          return;
-        }
+  //       if (birthdays.length === 0) {
+  //         ctx.res.status = 404;
+  //         return;
+  //       }
 
-        ctx.res.body = birthdays;
-        ctx.res.status = 200;
-      }),
-  );
+  //       ctx.res.body = birthdays;
+  //       ctx.res.status = 200;
+  //     }),
+  // );
 
   server.get(
     "/api/birthdays/:code/next",

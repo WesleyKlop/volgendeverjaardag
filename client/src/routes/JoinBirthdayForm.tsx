@@ -1,16 +1,27 @@
-import React, { useState, useCallback, FormEvent, useEffect, useRef } from 'react'
+import React from 'react'
 import { submitBirthday } from '../lib/api'
 import { MIN_CODE_LENGTH } from '../lib/config'
 import { Button } from '../app/Button'
 import { Input } from '../app/Input'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 
 type FormValues = { name: string; birthDate: Date; code: string }
 
+const extractValidCode = (code: string | null): string | undefined => {
+  if (!code || code.length < MIN_CODE_LENGTH) {
+    return
+  }
+  return code
+}
+
 export const JoinBirthdayForm = () => {
+  const [searchParams] = useSearchParams()
   const { handleSubmit, register, formState } = useForm<FormValues>({
     mode: 'onChange',
+    defaultValues: {
+      code: extractValidCode(searchParams.get('code')),
+    },
   })
   const navigate = useNavigate()
 
@@ -34,7 +45,6 @@ export const JoinBirthdayForm = () => {
         label="Jouw naam"
         placeholder="Jan"
         autoComplete="given-name"
-        required
         type="text"
       />
 
@@ -58,7 +68,6 @@ export const JoinBirthdayForm = () => {
         id="code-input"
         label="Jouw groepscode"
         autoComplete="off"
-        autoFocus
         type="text"
       />
 
