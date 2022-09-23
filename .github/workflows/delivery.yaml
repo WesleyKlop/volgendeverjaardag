@@ -71,11 +71,14 @@ jobs:
           tags: |
             type=semver,pattern={{version}}
       - run: |
-          set -e
           echo '${{ steps.meta.outputs.json }}' | jq -c '.tags[]' | xargs -L 1 kustomize edit set image
-          git add .
-          git commit -m "Update image versions to ${GITHUB_REF##*/}"
-          git tag -f "${GITHUB_REF##*/}"
-          git push --force-with-lease --tags
         working-directory: manifests
+      - uses: EndBug/add-and-commit@v9 # You can change this to use a specific version.
+        with:
+          add: manifests
+          default_author: github_actions
+          message: Update image versions to ${{ github.ref_name }}
+          push: true
+          tag: ${{ github.ref_name }} --force
+          tag_push: --force
 
