@@ -23,3 +23,5 @@ spec:
           env:
             - name: API_HOST
               value: volgendeverjaardag-server
+            - name: API_PORT
+              value: '8080'
