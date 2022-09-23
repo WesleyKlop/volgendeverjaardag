@@ -79,6 +79,7 @@ jobs:
           add: manifests
           default_author: github_actions
           message: Update image versions to ${{ github.ref_name }}
+          new_branch: release/${{ github.ref_name }}
           push: true
           tag: ${{ github.ref_name }} --force
           tag_push: --force
