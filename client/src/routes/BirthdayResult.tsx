@@ -24,7 +24,11 @@ export const BirthDayResult: React.FC = () => {
 
     if (result) {
       setPerson(result)
-      setToday(isSameDate(new Date(result.next_birthday)))
+      const today = isSameDate(new Date(result.next_birthday))
+      setToday(today)
+      if (today) {
+        void confetti()
+      }
     }
   }
 
