@@ -97,7 +97,7 @@ LIMIT 1;
 export const findById = async (id: string, client: PoolClient) => {
   const results = await client.queryObject<
     RawBirthday
-  >`SELECT id, code, name, birth_date FROM birthdays WHERE  = ${id}`;
+  >`SELECT id, code, name, birth_date FROM birthdays WHERE id = ${id}`;
 
   if (results.rowCount !== 1) {
     return;

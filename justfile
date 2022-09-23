@@ -1,5 +1,8 @@
 permissions := "--allow-net --allow-env --allow-read --allow-write"
 
+dev:
+  docker compose up -d
+
 start-server:
     cd server && deno run \
       {{ permissions }} \

@@ -65,15 +65,7 @@ export const registerBirthDays = (server: Server) => {
     res("json"),
     (ctx) =>
       withConnection(async (client) => {
-        let body;
-        try {
-          body = await ctx.req.json();
-        } catch {
-          ctx.res.status = 422;
-          return;
-        }
-
-        const response = await createBirthDay(body, client);
+        const response = await createBirthDay(ctx.body, client);
         if (!response) {
           throw "Failed to save birthday";
         }
