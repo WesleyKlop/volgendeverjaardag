@@ -4,8 +4,6 @@ interface IBirthday {
   code: string;
   name: string;
   birthDate: Date;
-
-  getId(): string;
 }
 
 type NextBirthday = {
