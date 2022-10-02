@@ -1,4 +1,4 @@
-FROM lukechannings/deno:v1.25.4 AS base
+FROM lukechannings/deno:v1.26.0 AS base
 
 WORKDIR /usr/src/app
 
