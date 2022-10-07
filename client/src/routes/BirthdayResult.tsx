@@ -73,7 +73,7 @@ export const BirthDayResult: React.FC = () => {
           &nbsp;🥳🎉
         </p>
       )}
-      {!isShowingAll && (<Button className="mt-4" onClick={showAll}>Bekijk wie nog meer jarig is</Button>)}
+      {!isShowingAll && (<Button className="mt-4" onClick={showAll}>Bekijk welke verjaardagen er nog meer aan komen</Button>)}
     </div>
   ) : (
     <div>Niemand gevonden</div>
