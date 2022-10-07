@@ -70,6 +70,7 @@ export const registerBirthDays = (server: Server) => {
         };
         return;
       }
+      birthday.code = birthday.code.toLowerCase();
       if (isNaN(birthday.birthDate.getTime())) {
         ctx.res.status = 422;
         ctx.res.body = {

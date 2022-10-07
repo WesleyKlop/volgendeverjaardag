@@ -12,7 +12,7 @@ services:
     volumes:
       - db-data:/var/lib/postgresql/data
   server:
-    image: ghcr.io/wesleyklop/volgendeverjaardag.nl-server:latest
+    image: ghcr.io/wesleyklop/volgendeverjaardag-server:latest
     build:
       context: server
       target: ${TARGET-dev}
@@ -25,12 +25,12 @@ services:
     volumes:
       - ./server:/usr/src/app
   client:
-    image: ghcr.io/wesleyklop/volgendeverjaardag.nl-client:latest
+    image: ghcr.io/wesleyklop/volgendeverjaardag-client:latest
     build:
       context: client
       target: ${TARGET-dev}
     ports:
-      - 8081:8080
+      - '8081:8080'
     environment:
       API_HOST: server
       API_PORT: 8080
