@@ -6,7 +6,12 @@ import { Input } from '../app/Input'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 
-type FormValues = { name: string; birthDate: Date; code: string }
+type FormValues = {
+  name: string;
+  birthDate: Date;
+  code: string;
+  url: string;
+}
 
 const extractValidCode = (code: string | null): string | undefined => {
   if (!code || code.length < MIN_CODE_LENGTH) {
@@ -14,6 +19,10 @@ const extractValidCode = (code: string | null): string | undefined => {
   }
   return code
 }
+
+const ALLOWED_ORIGINS = [
+  'lijstje.nl'
+]
 
 export const JoinBirthdayForm = () => {
   const [searchParams] = useSearchParams()
@@ -37,6 +46,7 @@ export const JoinBirthdayForm = () => {
         Wanneer je je aanmeld kan iedereen via de code die je invult er achter komen wanneer jij als
         volgende jarig bent.
       </p>
+
       <Input
         {...register('name', {
           required: true,
@@ -69,6 +79,25 @@ export const JoinBirthdayForm = () => {
         label="Jouw groepscode"
         autoComplete="off"
         type="text"
+      />
+
+      <Input
+        {...register("url", {
+          required: true,
+          validate: (value) => {
+            try {
+              const url = new URL(value);
+              return ALLOWED_ORIGINS.includes(url.origin);
+            } catch {
+              return false;
+            }
+          }
+        })}
+        id="code-input"
+        label="Jouw verlanglijstje"
+        autoComplete="off"
+        type="url"
+        placeholder="https://lijstje.nl/[jouw lijstje]"
       />
 
       <Button type="submit" disabled={!formState.isValid}>
