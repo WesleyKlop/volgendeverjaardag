@@ -9,7 +9,6 @@ COPY . .
 
 RUN --mount=type=cache,target=/deno-dir/deps \
   deno compile \
-  --import-map=import_map.json \
   --allow-net --allow-env --allow-read --allow-write \
   --unsafely-ignore-certificate-errors \
   --output /usr/local/bin/server \
