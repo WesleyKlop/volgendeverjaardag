@@ -6,11 +6,13 @@ dev:
 start-server:
     cd server && deno run \
       {{ permissions }} \
+      --lock lock.json \
         src/bin/server.ts
 
 compile-server: clean-server
     cd server && deno compile \
       {{ permissions }} \
+      --lock lock.json \
       --output bin/server \
         src/bin/server.ts
 
@@ -42,4 +44,7 @@ write-lock-server:
   cd server && deno cache --lock=lock.json --lock-write src/deps.ts
 
 reload-lock-server:
-  cd server && deno cache --reload --lock=lock.json src/deps.ts
+  cd server && deno cache \
+    --reload \
+    --lock=lock.json \
+  src/deps.ts

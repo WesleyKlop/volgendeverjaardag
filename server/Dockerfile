@@ -19,7 +19,7 @@ RUN --mount=type=cache,target=/deno-dir/deps \
 FROM base as dev
 
 EXPOSE 8080
-CMD ["run","--allow-net", "--allow-env", "--allow-read", "--allow-write", "--watch", "src/bin/server.ts"]
+CMD ["run", "--lock", "lock.json", "--allow-net", "--allow-env", "--allow-read", "--allow-write", "--watch", "src/bin/server.ts"]
 
 FROM gcr.io/distroless/cc
 
