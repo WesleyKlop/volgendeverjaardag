@@ -35,6 +35,7 @@ export const registerBirthDays = (server: Server) => {
     (ctx) =>
       withConnection(async (client) => {
         const { code } = ctx.params;
+        const includeAll = ctx.url.searchParams.has('all');
 
         if (typeof code !== "string") {
           ctx.res.body = {
@@ -43,7 +44,7 @@ export const registerBirthDays = (server: Server) => {
           ctx.res.status = 404;
           return;
         }
-        const nextBirthday = await findNextByCode(code, client);
+        const nextBirthday = await findNextByCode(code, client, !includeAll);
 
         if (!nextBirthday) {
           ctx.res.status = 404;
