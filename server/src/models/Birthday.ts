@@ -24,23 +24,10 @@ type RawNextBirthday = {
   age: number;
   next_birthday: string;
 };
-
-export const findByCode = async (code: string, client: PoolClient) => {
-  const results = await client.queryObject<RawBirthday>`
-        SELECT id, code, name, birth_date FROM birthdays WHERE code = ${code};
-    `;
-
-  return results.rows.map((row: RawBirthday): Birthday => ({
-    id: row.id,
-    name: row.name,
-    code: row.code,
-    birthDate: new Date(row.birth_date),
-  }));
-};
-
 export const findNextByCode = async (
   code: string,
   client: PoolClient,
+  onlyOnNextDate = true,
 ): Promise<NextBirthday[]> => {
   const { rows } = await client.queryObject<RawNextBirthday>`
 SELECT
@@ -81,6 +68,10 @@ ORDER BY
 
   if (!nextBirthday) {
     return [];
+  }
+
+  if(!onlyOnNextDate) {
+    return result;
   }
 
   return result.filter((bd) =>
