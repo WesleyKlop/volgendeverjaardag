@@ -1,4 +1,4 @@
-import { Server } from "@deno/faster";
+import { Server } from "../deps.ts";
 import { registerBirthDays } from "./birthdays.ts";
 import { registerHealth } from "./health.ts";
 

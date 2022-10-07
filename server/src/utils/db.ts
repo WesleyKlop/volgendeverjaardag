@@ -1,4 +1,4 @@
-import { Pool, PoolClient } from "@deno/x/postgres";
+import { Pool, PoolClient } from "../deps.ts";
 
 const connectionUrl = new URL(Deno.env.get("DATABASE_URL")!);
 

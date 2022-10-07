@@ -1,4 +1,4 @@
-import { req, res, Server } from "@deno/faster";
+import { req, res, Server } from "../deps.ts";
 import { createBirthDay, findNextByCode } from "../models/Birthday.ts";
 import { withConnection } from "../utils/db.ts";
 

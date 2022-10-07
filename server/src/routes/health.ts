@@ -1,4 +1,4 @@
-import { Server } from "@deno/faster";
+import { Server } from "../deps.ts";
 
 export const registerHealth = (server: Server) => {
   server.get("/api/health", ({ res }) => {

@@ -1,4 +1,4 @@
-import { rateLimit, Server } from "@deno/faster";
+import { rateLimit, Server } from "./deps.ts";
 import { registerRoutes } from "./routes/index.ts";
 
 const server = new Server();

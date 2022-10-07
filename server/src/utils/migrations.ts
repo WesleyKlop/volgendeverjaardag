@@ -1,5 +1,5 @@
-import { PoolClient } from "@deno/x/postgres";
-import { getPool } from "../utils/db.ts";
+import { PoolClient } from "../deps.ts";
+import { getPool } from "./db.ts";
 
 const doesMigrationsTableExist = async (
   connection: PoolClient,

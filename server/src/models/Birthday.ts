@@ -1,4 +1,4 @@
-import { PoolClient } from "@deno/x/postgres";
+import { PoolClient } from "../deps.ts";
 
 type Birthday = {
   id: string;

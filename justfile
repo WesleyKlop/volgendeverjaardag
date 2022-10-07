@@ -37,3 +37,9 @@ build: compile-server build-client
 clean: clean-server clean-client
 
 fmt: fmt-server fmt-client
+
+write-lock-server:
+  cd server && deno cache --lock=lock.json --lock-write src/deps.ts
+
+reload-lock-server:
+  cd server && deno cache --reload --lock=lock.json src/deps.ts
