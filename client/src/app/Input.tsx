@@ -2,12 +2,14 @@ import classNames from 'classnames'
 import React from 'react'
 import { FieldError } from 'react-hook-form'
 
-type InputProps = React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>,
-  HTMLInputElement> & {
+type InputProps = React.DetailedHTMLProps<
+  React.InputHTMLAttributes<HTMLInputElement>,
+  HTMLInputElement
+> & {
   label: string
   id: string
   error?: FieldError
-  info?: string;
+  info?: string
 }
 
 const formatValidationMessage = (error: FieldError) => {
@@ -41,9 +43,8 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
       {error ? (
         <p className="text-xs font-light text-red-500 mt-0.5">{formatValidationMessage(error)}</p>
       ) : (
-        info && (
-          <p className="text-xs font-light mt-0.5">{info}</p>
-        ))}
+        info && <p className="text-xs font-light mt-0.5">{info}</p>
+      )}
     </div>
   ),
 )

@@ -7,10 +7,10 @@ import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 
 type FormValues = {
-  name: string;
-  birthDate: Date;
-  code: string;
-  website: string;
+  name: string
+  birthDate: Date
+  code: string
+  website: string
 }
 
 const extractValidCode = (code: string | null): string | undefined => {
@@ -20,9 +20,7 @@ const extractValidCode = (code: string | null): string | undefined => {
   return code
 }
 
-const ALLOWED_ORIGINS = [
-  'lijstje.nl',
-]
+const ALLOWED_ORIGINS = ['lijstje.nl']
 
 export const JoinBirthdayForm = () => {
   const [searchParams] = useSearchParams()
@@ -92,15 +90,13 @@ export const JoinBirthdayForm = () => {
         {...register('website', {
           required: false,
           validate: (value) => {
-            if(value.length === 0) {
-              return true;
+            if (value.length === 0) {
+              return true
             }
             try {
               const url = new URL(value)
               console.log(url, ALLOWED_ORIGINS, url.host)
-              return ALLOWED_ORIGINS.includes(url.host)
-                ? true
-                : 'Ongeldig domein'
+              return ALLOWED_ORIGINS.includes(url.host) ? true : 'Ongeldig domein'
             } catch {
               return 'Ongeldige url'
             }
