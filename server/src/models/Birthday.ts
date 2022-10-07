@@ -1,48 +1,48 @@
-import {PoolClient} from "@deno/x/postgres";
+import { PoolClient } from "@deno/x/postgres";
 
 type Birthday = {
-    id: string;
-    code: string;
-    name: string;
-    birthDate: Date;
-}
+  id: string;
+  code: string;
+  name: string;
+  birthDate: Date;
+};
 
 type NextBirthday = {
-    name: string;
-    birthDate: Date;
-    age: number;
-    nextBirthday: Date;
+  name: string;
+  birthDate: Date;
+  age: number;
+  nextBirthday: Date;
 };
 
 export type RawBirthday = Omit<Birthday, "birthDate"> & {
-    birth_date: string;
+  birth_date: string;
 };
 
 type RawNextBirthday = {
-    name: string;
-    birth_date: string;
-    age: number;
-    next_birthday: string;
-}
+  name: string;
+  birth_date: string;
+  age: number;
+  next_birthday: string;
+};
 
 export const findByCode = async (code: string, client: PoolClient) => {
-    const results = await client.queryObject<RawBirthday>`
+  const results = await client.queryObject<RawBirthday>`
         SELECT id, code, name, birth_date FROM birthdays WHERE code = ${code};
     `;
 
-    return results.rows.map((row: RawBirthday): Birthday => ({
-        id: row.id,
-        name: row.name,
-        code: row.code,
-        birthDate: new Date(row.birth_date),
-    }));
+  return results.rows.map((row: RawBirthday): Birthday => ({
+    id: row.id,
+    name: row.name,
+    code: row.code,
+    birthDate: new Date(row.birth_date),
+  }));
 };
 
 export const findNextByCode = async (
-    code: string,
-    client: PoolClient,
+  code: string,
+  client: PoolClient,
 ): Promise<NextBirthday[]> => {
-    const {rows} = await client.queryObject<RawNextBirthday>`
+  const { rows } = await client.queryObject<RawNextBirthday>`
 SELECT
     name,
     birth_date,
@@ -71,46 +71,50 @@ ORDER BY
     next_birthday ASC;
 `;
 
-    const result: NextBirthday[] = rows.map((row) => ({
-        name: row.name,
-        age: row.age,
-        nextBirthday: new Date(row.next_birthday),
-        birthDate: new Date(row.birth_date),
-    }));
-    const nextBirthday = result[0]?.nextBirthday;
+  const result: NextBirthday[] = rows.map((row) => ({
+    name: row.name,
+    age: row.age,
+    nextBirthday: new Date(row.next_birthday),
+    birthDate: new Date(row.birth_date),
+  }));
+  const nextBirthday = result[0]?.nextBirthday;
 
-    if(! nextBirthday) {
-        return [];
-    }
+  if (!nextBirthday) {
+    return [];
+  }
 
-    return result.filter(bd => bd.nextBirthday.getTime() === nextBirthday.getTime());
+  return result.filter((bd) =>
+    bd.nextBirthday.getTime() === nextBirthday.getTime()
+  );
 };
 
 export const findById = async (id: string, client: PoolClient) => {
-    const results = await client.queryObject<RawBirthday>`SELECT id, code, name, birth_date FROM birthdays WHERE id = ${id}`;
+  const results = await client.queryObject<
+    RawBirthday
+  >`SELECT id, code, name, birth_date FROM birthdays WHERE id = ${id}`;
 
-    if (results.rowCount !== 1) {
-        return;
-    }
+  if (results.rowCount !== 1) {
+    return;
+  }
 
-    return results.rows.map((row: RawBirthday): Birthday => ({
-        id: row.id,
-        code: row.code,
-        name: row.name,
-        birthDate: new Date(row.birth_date),
-    }))[0];
+  return results.rows.map((row: RawBirthday): Birthday => ({
+    id: row.id,
+    code: row.code,
+    name: row.name,
+    birthDate: new Date(row.birth_date),
+  }))[0];
 };
 
-type NewBirthday = Omit<Birthday, 'id'>
+type NewBirthday = Omit<Birthday, "id">;
 export const createBirthDay = async (body: NewBirthday, client: PoolClient) => {
-    const result = await client.queryObject<{ id: string }>`
+  const result = await client.queryObject<{ id: string }>`
           INSERT INTO birthdays (name, code, birth_date) 
             VALUES (${body.name}, ${body.code}, ${body.birthDate})
             RETURNING id;
     `;
 
-    if (result.rowCount !== 1) {
-        return;
-    }
-    return await findById(result.rows[0].id, client);
+  if (result.rowCount !== 1) {
+    return;
+  }
+  return await findById(result.rows[0].id, client);
 };

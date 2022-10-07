@@ -47,9 +47,12 @@ export const BirthDayResult: React.FC = () => {
 
   return birthdays ? (
     <div className="text-center">
-      {birthdays.map(birthday => (<p key={birthday.name}>
-        {birthday.name} is op {formatDate(birthday.nextBirthday)} jarig en word dan {birthday.age}!
-      </p>))}
+      {birthdays.map((birthday) => (
+        <p key={birthday.name}>
+          {birthday.name} is op {formatDate(birthday.nextBirthday)} jarig en word dan {birthday.age}
+          !
+        </p>
+      ))}
       {isToday && (
         <p className="text-xl">
           🎉🥳&nbsp;

@@ -1,16 +1,16 @@
 import { Birthday, intoBirthday, RawBirthday } from './birthday'
 
 export type NextBirthday = {
-  name: string;
-  birthDate: Date;
-  nextBirthday: Date;
-  age: number;
+  name: string
+  birthDate: Date
+  nextBirthday: Date
+  age: number
 }
 type RawNextBirthday = {
-  name: string;
-  birthDate: string;
-  nextBirthday: string;
-  age: number;
+  name: string
+  birthDate: string
+  nextBirthday: string
+  age: number
 }
 export const fetchNextBirthday = async (code: string): Promise<NextBirthday[] | null> => {
   return await fetch(`/api/birthdays/${encodeURIComponent(code)}/next`, {
@@ -26,12 +26,16 @@ export const fetchNextBirthday = async (code: string): Promise<NextBirthday[] | 
       }
       return Promise.reject()
     })
-    .then(birthdays => birthdays.map((bd): NextBirthday => ({
-      name: bd.name,
-      age: bd.age,
-      nextBirthday: new Date(bd.nextBirthday),
-      birthDate: new Date(bd.birthDate),
-    })))
+    .then((birthdays) =>
+      birthdays.map(
+        (bd): NextBirthday => ({
+          name: bd.name,
+          age: bd.age,
+          nextBirthday: new Date(bd.nextBirthday),
+          birthDate: new Date(bd.birthDate),
+        }),
+      ),
+    )
     .catch(() => null)
 }
 
