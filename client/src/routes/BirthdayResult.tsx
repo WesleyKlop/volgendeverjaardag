@@ -46,8 +46,7 @@ export const BirthDayResult: React.FC = () => {
   const showAll = useCallback(async () => {
     setLoading(true)
     const result = await fetchNextBirthday(code!, true)
-    if (result)
-      setBirthdays(result)
+    if (result) setBirthdays(result)
     setLoading(false)
     setShowingAll(true)
   }, [code])
@@ -73,7 +72,11 @@ export const BirthDayResult: React.FC = () => {
           &nbsp;🥳🎉
         </p>
       )}
-      {!isShowingAll && (<Button className="mt-4" onClick={showAll}>Bekijk welke verjaardagen er nog meer aan komen</Button>)}
+      {!isShowingAll && (
+        <Button className="mt-4" onClick={showAll}>
+          Bekijk welke verjaardagen er nog meer aan komen
+        </Button>
+      )}
     </div>
   ) : (
     <div>Niemand gevonden</div>

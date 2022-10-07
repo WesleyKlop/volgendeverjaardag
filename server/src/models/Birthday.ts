@@ -70,7 +70,7 @@ ORDER BY
     return [];
   }
 
-  if(!onlyOnNextDate) {
+  if (!onlyOnNextDate) {
     return result;
   }
 

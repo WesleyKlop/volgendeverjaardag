@@ -12,7 +12,7 @@ type Props = {
   disabled?: boolean
   children?: React.ReactNode
   className?: string
-  onClick?: React.HTMLAttributes<HTMLButtonElement>["onClick"]
+  onClick?: React.HTMLAttributes<HTMLButtonElement>['onClick']
 }
 export const Button: React.FC<Props> = ({ type, disabled, children, className, onClick }) => (
   <button

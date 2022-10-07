@@ -35,7 +35,7 @@ export const registerBirthDays = (server: Server) => {
     (ctx) =>
       withConnection(async (client) => {
         const { code } = ctx.params;
-        const includeAll = ctx.url.searchParams.has('all');
+        const includeAll = ctx.url.searchParams.has("all");
 
         if (typeof code !== "string") {
           ctx.res.body = {
