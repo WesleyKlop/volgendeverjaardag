@@ -5,7 +5,8 @@
   "scripts": {
     "start": "parcel src/index.html",
     "build": "parcel build src/index.html",
-    "fmt": "prettier --write \"src\""
+    "fmt": "prettier --write \"src\"",
+    "lint": "prettier --check \"src\""
   },
   "keywords": [],
   "author": "Wesley Klop <wesley19097@gmail.com>",

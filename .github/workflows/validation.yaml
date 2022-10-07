@@ -44,5 +44,5 @@ jobs:
             client/package-lock.json
       - run: npm ci
         working-directory: client
-      - run: npm run fmt -- --check
+      - run: npm run lint
         working-directory: client
