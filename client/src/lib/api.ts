@@ -12,8 +12,12 @@ type RawNextBirthday = {
   nextBirthday: string
   age: number
 }
-export const fetchNextBirthday = async (code: string): Promise<NextBirthday[] | null> => {
-  return await fetch(`/api/birthdays/${encodeURIComponent(code)}/next`, {
+export const fetchNextBirthday = async (code: string, all = false): Promise<NextBirthday[] | null> => {
+  const url = new URL(`/api/birthdays/${encodeURIComponent(code)}/next`, location.origin)
+  if (all) {
+    url.searchParams.append('all', '');
+  }
+  return await fetch(url.toString(), {
     method: 'GET',
     headers: {
       Accept: 'application/json',
