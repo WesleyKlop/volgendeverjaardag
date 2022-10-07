@@ -9,7 +9,7 @@ type Params = {
 }
 export const BirthDayResult: React.FC = () => {
   const [isLoading, setLoading] = useState(true)
-  const [person, setPerson] = useState<NextBirthday>()
+  const [birthdays, setBirthdays] = useState<NextBirthday[]>([])
   const [isToday, setToday] = useState(false)
   const { code } = useParams<Params>()
   const navigate = useNavigate()
@@ -22,13 +22,15 @@ export const BirthDayResult: React.FC = () => {
     const result = await fetchNextBirthday(code)
     setLoading(false)
 
-    if (result) {
-      setPerson(result)
-      const today = isSameDate(new Date(result.next_birthday))
-      setToday(today)
-      if (today) {
-        void confetti()
-      }
+    if (!result) {
+      return
+    }
+
+    setBirthdays(result)
+    const today = isSameDate(new Date(result[0]?.nextBirthday))
+    setToday(today)
+    if (today) {
+      await confetti()
     }
   }
 
@@ -43,12 +45,14 @@ export const BirthDayResult: React.FC = () => {
     return <div>Laden...</div>
   }
 
-  return person ? (
+  return birthdays ? (
     <div className="text-center">
-      <p>
-        {person.name} is op {formatDate(person.next_birthday)} jarig en wordt dan{' '}
-        {isToday ? person.curr_age : person.new_age}!
-      </p>
+      {birthdays.map((birthday) => (
+        <p key={birthday.name}>
+          {birthday.name} is op {formatDate(birthday.nextBirthday)} jarig en word dan {birthday.age}
+          !
+        </p>
+      ))}
       {isToday && (
         <p className="text-xl">
           🎉🥳&nbsp;

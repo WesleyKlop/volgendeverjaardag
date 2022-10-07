@@ -1,6 +1,6 @@
-export const formatDate = (date: string): string => {
-  const formatter = new Intl.DateTimeFormat(undefined, { dateStyle: 'long' })
-  return formatter.format(new Date(date))
+const formatter = new Intl.DateTimeFormat('nl-nl', { dateStyle: 'long' })
+export const formatDate = (date: Date): string => {
+  return formatter.format(date)
 }
 
 export const isSameDate = (a: Date, b: Date = new Date()): boolean =>
