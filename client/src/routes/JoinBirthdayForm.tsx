@@ -21,7 +21,7 @@ const extractValidCode = (code: string | null): string | undefined => {
 }
 
 const ALLOWED_ORIGINS = [
-  'lijstje.nl'
+  'lijstje.nl',
 ]
 
 export const JoinBirthdayForm = () => {
@@ -50,24 +50,30 @@ export const JoinBirthdayForm = () => {
       <Input
         {...register('name', {
           required: true,
+          min: 1,
         })}
         id="name-input"
         label="Jouw naam"
         placeholder="Jan"
         autoComplete="given-name"
         type="text"
+        error={formState.errors.name}
       />
 
       <Input
         {...register('birthDate', {
           required: true,
           valueAsDate: true,
+          validate: (val: Date) => {
+            return isNaN(val.getTime()) ? 'Ongeldige datum' : true
+          },
         })}
         id="birth-input"
         label="Jouw geboortedatum"
         placeholder="26-7-1986"
         autoComplete="bday"
         type="date"
+        error={formState.errors.birthDate}
       />
 
       <Input
@@ -79,25 +85,30 @@ export const JoinBirthdayForm = () => {
         label="Jouw groepscode"
         autoComplete="off"
         type="text"
+        error={formState.errors.code}
       />
 
       <Input
-        {...register("url", {
+        {...register('url', {
           required: true,
           validate: (value) => {
             try {
-              const url = new URL(value);
-              return ALLOWED_ORIGINS.includes(url.origin);
+              const url = new URL(value)
+              return ALLOWED_ORIGINS.includes(url.origin)
+                ? true
+                : 'Ongeldig domein'
             } catch {
-              return false;
+              return 'Ongeldige url'
             }
-          }
+          },
         })}
         id="code-input"
         label="Jouw verlanglijstje"
         autoComplete="off"
         type="url"
         placeholder="https://lijstje.nl/[jouw lijstje]"
+        error={formState.errors.url}
+        info={`Toegestane domeinen: ${ALLOWED_ORIGINS.join(', ')}`}
       />
 
       <Button type="submit" disabled={!formState.isValid}>
