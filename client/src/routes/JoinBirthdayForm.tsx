@@ -10,7 +10,7 @@ type FormValues = {
   name: string;
   birthDate: Date;
   code: string;
-  url: string;
+  website: string;
 }
 
 const extractValidCode = (code: string | null): string | undefined => {
@@ -89,12 +89,16 @@ export const JoinBirthdayForm = () => {
       />
 
       <Input
-        {...register('url', {
-          required: true,
+        {...register('website', {
+          required: false,
           validate: (value) => {
+            if(value.length === 0) {
+              return true;
+            }
             try {
               const url = new URL(value)
-              return ALLOWED_ORIGINS.includes(url.origin)
+              console.log(url, ALLOWED_ORIGINS, url.host)
+              return ALLOWED_ORIGINS.includes(url.host)
                 ? true
                 : 'Ongeldig domein'
             } catch {
@@ -107,7 +111,7 @@ export const JoinBirthdayForm = () => {
         autoComplete="off"
         type="url"
         placeholder="https://lijstje.nl/[jouw lijstje]"
-        error={formState.errors.url}
+        error={formState.errors.website}
         info={`Toegestane domeinen: ${ALLOWED_ORIGINS.join(', ')}`}
       />
 

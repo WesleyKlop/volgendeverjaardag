@@ -59,8 +59,11 @@ export const BirthDayResult: React.FC = () => {
     <div className="text-center">
       {birthdays.map((birthday) => (
         <p key={birthday.name}>
-          {birthday.name} is op {formatDate(birthday.nextBirthday)} jarig en word dan {birthday.age}
-          !
+          <span>{birthday.name} is op {formatDate(birthday.nextBirthday)} jarig en word dan {birthday.age}!</span>
+          &nbsp;
+          {birthday.website && (<a className="text-xs" href={birthday.website.toString()} target="_blank" rel="noreferrer">
+            Bekijk hier mijn verlanglijstje.
+          </a>)}
         </p>
       ))}
       {isToday && (
