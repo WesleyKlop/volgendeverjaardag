@@ -6,7 +6,12 @@ import { Input } from '../app/Input'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 
-type FormValues = { name: string; birthDate: Date; code: string }
+type FormValues = {
+  name: string
+  birthDate: Date
+  code: string
+  website: string
+}
 
 const extractValidCode = (code: string | null): string | undefined => {
   if (!code || code.length < MIN_CODE_LENGTH) {
@@ -14,6 +19,8 @@ const extractValidCode = (code: string | null): string | undefined => {
   }
   return code
 }
+
+const ALLOWED_ORIGINS = ['lijstje.nl']
 
 export const JoinBirthdayForm = () => {
   const [searchParams] = useSearchParams()
@@ -37,27 +44,34 @@ export const JoinBirthdayForm = () => {
         Wanneer je je aanmeld kan iedereen via de code die je invult er achter komen wanneer jij als
         volgende jarig bent.
       </p>
+
       <Input
         {...register('name', {
           required: true,
+          min: 1,
         })}
         id="name-input"
         label="Jouw naam"
         placeholder="Jan"
         autoComplete="given-name"
         type="text"
+        error={formState.errors.name}
       />
 
       <Input
         {...register('birthDate', {
           required: true,
           valueAsDate: true,
+          validate: (val: Date) => {
+            return isNaN(val.getTime()) ? 'Ongeldige datum' : true
+          },
         })}
         id="birth-input"
         label="Jouw geboortedatum"
         placeholder="26-7-1986"
         autoComplete="bday"
         type="date"
+        error={formState.errors.birthDate}
       />
 
       <Input
@@ -69,6 +83,32 @@ export const JoinBirthdayForm = () => {
         label="Jouw groepscode"
         autoComplete="off"
         type="text"
+        error={formState.errors.code}
+      />
+
+      <Input
+        {...register('website', {
+          required: false,
+          validate: (value) => {
+            if (value.length === 0) {
+              return true
+            }
+            try {
+              const url = new URL(value)
+              console.log(url, ALLOWED_ORIGINS, url.host)
+              return ALLOWED_ORIGINS.includes(url.host) ? true : 'Ongeldig domein'
+            } catch {
+              return 'Ongeldige url'
+            }
+          },
+        })}
+        id="code-input"
+        label="Jouw verlanglijstje"
+        autoComplete="off"
+        type="url"
+        placeholder="https://lijstje.nl/[jouw lijstje]"
+        error={formState.errors.website}
+        info={`Toegestane domeinen: ${ALLOWED_ORIGINS.join(', ')}`}
       />
 
       <Button type="submit" disabled={!formState.isValid}>

@@ -2,33 +2,11 @@ import { req, res, Server } from "../deps.ts";
 import { createBirthDay, findNextByCode } from "../models/Birthday.ts";
 import { withConnection } from "../utils/db.ts";
 
+const ALLOWED_ORIGINS = [
+  "lijstje.nl",
+];
+
 export const registerBirthDays = (server: Server) => {
-  // server.get(
-  //   "/api/birthdays/:code",
-  //   res("json"),
-  //   (ctx) =>
-  //     withConnection(async (client) => {
-  //       const { code } = ctx.params;
-
-  //       if (typeof code !== "string") {
-  //         ctx.res.body = {
-  //           message: "Invalid code",
-  //         };
-  //         ctx.res.status = 404;
-  //         return;
-  //       }
-  //       const birthdays = await findByCode(code, client);
-
-  //       if (birthdays.length === 0) {
-  //         ctx.res.status = 404;
-  //         return;
-  //       }
-
-  //       ctx.res.body = birthdays;
-  //       ctx.res.status = 200;
-  //     }),
-  // );
-
   server.get(
     "/api/birthdays/:code/next",
     res("json"),
@@ -66,6 +44,7 @@ export const registerBirthDays = (server: Server) => {
           code: ctx.body.code,
           birthDate: new Date(ctx.body.birthDate),
           name: ctx.body.name,
+          website: ctx.body.website ? new URL(ctx.body.website) : undefined,
         };
         if (
           typeof birthday.code !== "string" ||
@@ -92,6 +71,16 @@ export const registerBirthDays = (server: Server) => {
           ctx.res.body = {
             message:
               "Invalid name, must be a string smaller than 32 characters",
+          };
+          return;
+        }
+        if (
+          birthday.website !== undefined &&
+          !ALLOWED_ORIGINS.includes(birthday.website.host)
+        ) {
+          ctx.res.status = 422;
+          ctx.res.body = {
+            message: "Invalid website",
           };
           return;
         }

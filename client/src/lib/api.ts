@@ -5,12 +5,14 @@ export type NextBirthday = {
   birthDate: Date
   nextBirthday: Date
   age: number
+  website?: URL
 }
 type RawNextBirthday = {
   name: string
   birthDate: string
   nextBirthday: string
   age: number
+  website?: string
 }
 export const fetchNextBirthday = async (
   code: string,
@@ -40,6 +42,7 @@ export const fetchNextBirthday = async (
           age: bd.age,
           nextBirthday: new Date(bd.nextBirthday),
           birthDate: new Date(bd.birthDate),
+          website: bd.website ? new URL(bd.website) : undefined,
         }),
       ),
     )

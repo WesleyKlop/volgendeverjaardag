@@ -5,6 +5,7 @@ type Birthday = {
   code: string;
   name: string;
   birthDate: Date;
+  website: URL | undefined;
 };
 
 type NextBirthday = {
@@ -12,10 +13,12 @@ type NextBirthday = {
   birthDate: Date;
   age: number;
   nextBirthday: Date;
+  website: URL | undefined;
 };
 
-export type RawBirthday = Omit<Birthday, "birthDate"> & {
+export type RawBirthday = Omit<Birthday, "birthDate" | "website"> & {
   birth_date: string;
+  website: string | undefined;
 };
 
 type RawNextBirthday = {
@@ -23,6 +26,7 @@ type RawNextBirthday = {
   birth_date: string;
   age: number;
   next_birthday: string;
+  website: string | undefined;
 };
 export const findNextByCode = async (
   code: string,
@@ -33,6 +37,7 @@ export const findNextByCode = async (
 SELECT
     name,
     birth_date,
+    website,
     CASE WHEN curr_birthday = CURRENT_DATE THEN
         curr_birthday
     ELSE
@@ -48,6 +53,7 @@ FROM (
         id,
         name,
         birth_date,
+        website,
         extract(year FROM age(birth_date))::smallint AS age,
         cast(birth_date + (extract(year FROM age(birth_date)) * interval '1' year) AS date) AS curr_birthday
     FROM
@@ -58,11 +64,13 @@ ORDER BY
     next_birthday ASC;
 `;
 
+  console.log(rows);
   const result: NextBirthday[] = rows.map((row) => ({
     name: row.name,
     age: row.age,
     nextBirthday: new Date(row.next_birthday),
     birthDate: new Date(row.birth_date),
+    website: row.website ? new URL(row.website) : undefined,
   }));
   const nextBirthday = result[0]?.nextBirthday;
 
@@ -82,7 +90,7 @@ ORDER BY
 export const findById = async (id: string, client: PoolClient) => {
   const results = await client.queryObject<
     RawBirthday
-  >`SELECT id, code, name, birth_date FROM birthdays WHERE id = ${id}`;
+  >`SELECT id, code, name, birth_date, website FROM birthdays WHERE id = ${id}`;
 
   if (results.rowCount !== 1) {
     return;
@@ -93,14 +101,15 @@ export const findById = async (id: string, client: PoolClient) => {
     code: row.code,
     name: row.name,
     birthDate: new Date(row.birth_date),
+    website: row.website ? new URL(row.website) : undefined,
   }))[0];
 };
 
 type NewBirthday = Omit<Birthday, "id">;
 export const createBirthDay = async (body: NewBirthday, client: PoolClient) => {
   const result = await client.queryObject<{ id: string }>`
-          INSERT INTO birthdays (name, code, birth_date) 
-            VALUES (${body.name}, ${body.code}, ${body.birthDate})
+          INSERT INTO birthdays (name, code, birth_date, website) 
+            VALUES (${body.name}, ${body.code}, ${body.birthDate}, ${body.website?.toString()})
             RETURNING id;
     `;
 

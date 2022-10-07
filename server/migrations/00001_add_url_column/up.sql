@@ -1,0 +1,2 @@
+ALTER TABLE birthdays
+  ADD COLUMN website TEXT NULL;
