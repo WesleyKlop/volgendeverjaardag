@@ -14,7 +14,7 @@
   "devDependencies": {
     "@tailwindcss/forms": "^0.5.3",
     "@types/react": "^18.0.25",
-    "@types/react-dom": "^18.0.8",
+    "@types/react-dom": "^18.0.10",
     "http-proxy-middleware": "^2.0.6",
     "parcel": "^2.7.0",
     "postcss": "^8.4.18",
