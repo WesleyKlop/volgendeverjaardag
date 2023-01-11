@@ -34,7 +34,7 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ github.token }}
-      - uses: docker/metadata-action@v4.1.1
+      - uses: docker/metadata-action@v4.2.0
         id: meta
         with:
           images: ghcr.io/${{ github.repository }}-${{ matrix.app }}
@@ -61,7 +61,7 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v3
-      - uses: docker/metadata-action@v4.1.1
+      - uses: docker/metadata-action@v4.2.0
         id: meta
         with:
           flavor: |
