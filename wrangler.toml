@@ -1,0 +1,10 @@
+name="volgendeverjaardag"
+pages_build_output_dir="./dist"
+compatibility_date = "2024-06-12"
+
+[[d1_databases]]
+binding = "DB" # available in your Worker on env.DB
+database_name = "volgendeverjaardag"
+database_id = "ab4e6079-33f4-4614-be5c-574b49b7123f"
+migrations_dir = "./migrations"
+
