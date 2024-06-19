@@ -4,7 +4,7 @@ import { useRouter, useRoute } from 'vue-router'
 import { fetchNextBirthday } from '../lib/api'
 import { confetti } from '../lib/confetti'
 import { formatDate, isSameDate } from '../lib/date'
-import { type NextBirthday } from '../lib/birthday'
+import { type NextBirthday, type Species } from '../lib/birthday'
 import AppButton from '../components/AppButton.vue'
 
 const isLoading = ref(true)
@@ -58,6 +58,12 @@ onMounted(() => {
     updatePerson(code.value)
   }
 })
+
+const emojis: Record<Species, string> = {
+  cat: '🐱',
+  dog: '🐶',
+  human: '',
+}
 </script>
 
 <template>
@@ -65,6 +71,7 @@ onMounted(() => {
   <div v-else-if="birthdays.length" class="text-center">
     <p v-for="birthday in birthdays" :key="birthday.name">
       <span>
+        {{ emojis[birthday.species] }}
         {{ birthday.name }} is op {{ formatDate(birthday.next_birthday) }} jarig en wordt dan
         {{ birthday.age }}!
       </span>

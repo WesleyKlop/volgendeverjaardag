@@ -11,7 +11,9 @@ export async function onRequestGet(context: EventContext<Env, 'code', never>) {
     return Response.json({ message: 'not found' }, { status: 404 })
   }
 
-  const birthdays = await getNextBirthdaysByCode(db, code)
+  const birthdays = await getNextBirthdaysByCode(db, code, {
+    type: url.searchParams.get('type') ?? undefined,
+  })
   if (!birthdays.length) {
     return Response.json({ message: 'not found' }, { status: 404 })
   }

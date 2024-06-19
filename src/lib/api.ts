@@ -1,4 +1,11 @@
-import { type NextBirthday, intoNextBirthday, type RawNextBirthday } from './birthday'
+import {
+  type NextBirthday,
+  intoNextBirthday,
+  type RawNextBirthday,
+  type Species,
+  intoBirthday,
+  type RawBirthday,
+} from './birthday'
 
 export const fetchNextBirthday = async (
   code: string,
@@ -25,22 +32,27 @@ export const fetchNextBirthday = async (
     .catch(() => null)
 }
 
-// type SubmitBirthdayParams = Omit<Birthday, 'id'>
-// export const submitBirthday = async (params: SubmitBirthdayParams) => {
-//   return await fetch(`/api/birthdays`, {
-//     method: 'POST',
-//     headers: {
-//       Accept: 'application/json',
-//       'Content-Type': 'application/json',
-//     },
-//     cache: 'no-cache',
-//     body: JSON.stringify(params),
-//   })
-//     .then((r) => {
-//       if (r.ok) {
-//         return r.json() as Promise<RawBirthday>
-//       }
-//       return Promise.reject()
-//     })
-//     .then((b) => intoBirthday(b))
-// }
+type SubmitBirthdayParams = {
+  code: string
+  birth_date: string
+  name: string
+  website: string
+  species: Species
+}
+export async function submitBirthday(params: SubmitBirthdayParams) {
+  const response = await fetch(`/api/birthdays`, {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    cache: 'no-cache',
+    body: JSON.stringify(params),
+  })
+
+  if (!response.ok) {
+    throw await response.json()
+  }
+
+  return intoBirthday(await response.json())
+}

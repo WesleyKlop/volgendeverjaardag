@@ -3,40 +3,49 @@ import { allowedSpecies, type Birthday, type Env, type Species } from '../types'
 
 type Body = {
   code: string
-  birthDate: string
+  birth_date: string
   name: string
   website: string
   species: Species
 }
 
+class ValidationError extends Error {
+  constructor(
+    public readonly fieldName: string,
+    public readonly info = '',
+  ) {
+    super(`invalid ${fieldName}`)
+  }
+}
+
 function parseRequestBody(body: Body): Omit<Birthday, 'id'> {
   console.log(body)
   if (!allowedSpecies.includes(body.species)) {
-    throw new Error('invalid species')
+    throw new ValidationError('species')
   }
 
-  const parsedDate = new Date(body.birthDate)
+  const parsedDate = new Date(body.birth_date)
   if (isNaN(parsedDate.getTime())) {
-    throw new Error('invalid birthDate')
+    throw new ValidationError('birth_date')
   }
 
   if (typeof body.code !== 'string' || body.code.length < 6 || body.code.length >= 32) {
-    throw new Error('invalid code')
+    throw new ValidationError('code')
   }
 
   if (typeof body.name !== 'string' || body.name.length === 0 || body.name.length >= 32) {
-    throw new Error('invalid name')
+    throw new ValidationError('name')
   }
 
   let parsedWebsite: null | URL = null
   try {
     if (body.website) parsedWebsite = new URL(body.website)
   } catch (cause) {
-    throw new Error('invalid website')
+    throw new ValidationError('website', 'parse error')
   }
 
   if (parsedWebsite instanceof URL && !['lijstje.nl'].includes(parsedWebsite?.host)) {
-    throw new Error('website origin not allowed')
+    throw new ValidationError('website', 'invalid origin')
   }
 
   return {
@@ -51,7 +60,15 @@ function parseRequestBody(body: Body): Omit<Birthday, 'id'> {
 export async function onRequestPost(ctx: EventContext<Env, never, never>) {
   const db = ctx.env.DB
 
-  const birthday = parseRequestBody(await ctx.request.json<Body>())
+  let birthday: Omit<Birthday, 'id'>
+  try {
+    birthday = parseRequestBody(await ctx.request.json<Body>())
+  } catch (err: unknown) {
+    if (err instanceof ValidationError) {
+      return Response.json({ message: err.message, error: err }, { status: 422 })
+    }
+    throw err
+  }
 
   const result = await db
     .prepare(

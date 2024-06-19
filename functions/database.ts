@@ -21,7 +21,16 @@ type NextBirthday = {
 export async function getNextBirthdaysByCode(
   db: D1Database,
   code: string,
+  filters: {
+    type?: string
+  },
 ): Promise<NextBirthday[]> {
+  const wheres: Record<string, string> = {
+    [`code = ?`]: code,
+  }
+  if (filters.type) {
+    wheres['species = ?'] = filters.type
+  }
   const birthdays = await db
     .prepare(
       `SELECT
@@ -49,13 +58,13 @@ FROM (
         DATE(birth_date, 'unixepoch', '+' || (strftime('%Y', 'now') - strftime('%Y', birth_date, 'unixepoch')) || ' years') AS curr_birthday
     FROM
         birthdays
-    WHERE
-        code = ?) AS base
+        ${Object.entries(wheres).length ? `WHERE ${Object.keys(wheres).join(' AND ')}` : ''}
+    ) AS base
 ORDER BY
     next_birthday ASC;
 `,
     )
-    .bind(code)
+    .bind(...Object.values(wheres))
     .all<DbNextBirthday>()
 
   if (!birthdays.results.length) {

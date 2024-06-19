@@ -14,6 +14,11 @@ const router = createRouter({
       name: 'code',
       component: () => import('../views/BirthdayResult.vue'),
     },
+    {
+      path: '/add',
+      name: 'add',
+      component: () => import('../views/AddBirthdayForm.vue'),
+    },
     // {
     //   path: '/about',
     //   name: 'about',
