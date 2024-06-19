@@ -1,18 +1,18 @@
 <script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
+import { RouterLink, RouterView, useRoute } from 'vue-router'
 
-const location = window.location
+const route = useRoute()
 </script>
 
 <template>
-  <main className="grid gap-4 p-4 max-w-screen-sm mx-auto">
-    <h1 className="text-4xl text-center font-title text-black">Wie is er ookalweer jarig?</h1>
+  <main class="mx-auto grid max-w-screen-sm gap-4 p-4">
+    <h1 class="text-center font-title text-4xl text-black">Wie is er ook alweer jarig?</h1>
 
     <RouterView />
 
     <RouterLink
-      v-if="location.pathname !== ''"
-      className="text-blue-500 hover:text-blue-600 mr-auto"
+      v-if="route.fullPath !== '/'"
+      class="mr-auto text-blue-500 hover:text-blue-600"
       to="/"
     >
       ← terug

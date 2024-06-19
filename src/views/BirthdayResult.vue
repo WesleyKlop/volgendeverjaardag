@@ -65,7 +65,7 @@ onMounted(() => {
   <div v-else-if="birthdays.length" class="text-center">
     <p v-for="birthday in birthdays" :key="birthday.name">
       <span>
-        {{ birthday.name }} is op {{ formatDate(birthday.next_birthday) }} jarig en word dan
+        {{ birthday.name }} is op {{ formatDate(birthday.next_birthday) }} jarig en wordt dan
         {{ birthday.age }}!
       </span>
       &nbsp;
@@ -90,5 +90,5 @@ onMounted(() => {
       Bekijk welke verjaardagen er nog meer aan komen
     </AppButton>
   </div>
-  <div v-else>Niemand gevonden</div>
+  <div v-else>Niemand gevonden. Bestaat de code wel?</div>
 </template>

@@ -6,7 +6,7 @@ export const fetchNextBirthday = async (
 ): Promise<NextBirthday[] | null> => {
   const url = new URL(`/api/birthdays/${encodeURIComponent(code)}/next`, location.origin)
   if (all) {
-    url.searchParams.append('all', '')
+    url.searchParams.append('all', '1')
   }
   return await fetch(url, {
     method: 'GET',
