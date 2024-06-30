@@ -52,6 +52,7 @@
         { value: 'human', label: 'Mens' },
         { value: 'cat', label: 'Kat' },
         { value: 'dog', label: 'Hond' },
+        // { value: 'alien', label: 'Alien'},
       ]"
     />
 

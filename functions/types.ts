@@ -4,7 +4,7 @@ export type Env = {
   DB: D1Database
 }
 
-export const allowedSpecies = ['human', 'cat', 'dog'] as const
+export const allowedSpecies = ['human', 'cat', 'dog', 'alien'] as const
 export type Species = (typeof allowedSpecies)[number]
 export type Birthday = {
   id: number

@@ -1,4 +1,4 @@
-export const allowedSpecies = ['human', 'cat', 'dog'] as const
+export const allowedSpecies = ['human', 'cat', 'dog', 'alien'] as const
 export type Species = (typeof allowedSpecies)[number]
 
 export type RawBirthday = {

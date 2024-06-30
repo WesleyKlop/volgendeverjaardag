@@ -2,12 +2,11 @@ import type { D1Database } from '@cloudflare/workers-types/experimental'
 import type { Species } from './types'
 
 type DbNextBirthday = {
+  id: string
   name: string
-  birth_date: number
+  birth_date: string
   species: Species
   website: null | string
-  next_birthday: number
-  age: number
 }
 type NextBirthday = {
   name: string
@@ -33,35 +32,16 @@ export async function getNextBirthdaysByCode(
   }
   const birthdays = await db
     .prepare(
-      `SELECT
-    name,
-    DATE(birth_date, 'unixepoch') AS birth_date,
-    species,
-    website,
-    CASE 
-        WHEN curr_birthday = DATE('now') THEN curr_birthday
-        ELSE DATE(curr_birthday, '+1 year')
-    END AS next_birthday,
-    CASE 
-        WHEN curr_birthday = DATE('now') THEN age
-        ELSE age + 1
-    END AS age
-FROM (
+      `
     SELECT
         id,
         name,
-        birth_date,
         species,
         website,
-        (strftime('%Y', 'now') - strftime('%Y', birth_date, 'unixepoch')) 
-        - (strftime('%m-%d', 'now') < strftime('%m-%d', birth_date, 'unixepoch')) AS age,
-        DATE(birth_date, 'unixepoch', '+' || (strftime('%Y', 'now') - strftime('%Y', birth_date, 'unixepoch')) || ' years') AS curr_birthday
+        DATE(birth_date, 'unixepoch') AS birth_date
     FROM
         birthdays
         ${Object.entries(wheres).length ? `WHERE ${Object.keys(wheres).join(' AND ')}` : ''}
-    ) AS base
-ORDER BY
-    next_birthday ASC;
 `,
     )
     .bind(...Object.values(wheres))
@@ -71,15 +51,48 @@ ORDER BY
     return []
   }
 
-  return birthdays.results.map(
-    (birthday) =>
-      ({
+  const today = new Date()
+  return birthdays.results
+    .map((birthday) => {
+      const birthDate = new Date(birthday.birth_date)
+      const nextBirthDay = new Date()
+      nextBirthDay.setMonth(birthDate.getMonth())
+      nextBirthDay.setDate(birthDate.getDate())
+      if (nextBirthDay < today) {
+        nextBirthDay.setFullYear(nextBirthDay.getFullYear() + 1)
+      }
+      const out = {
         name: birthday.name,
-        birth_date: new Date(birthday.birth_date),
-        next_birthday: new Date(birthday.next_birthday),
+        birth_date: birthDate,
+        next_birthday: nextBirthDay,
         species: birthday.species,
         website: birthday.website,
-        age: birthday.age,
-      }) satisfies NextBirthday,
-  )
+        // rare off by one ofzo
+        age: calculateAge(birthDate, nextBirthDay),
+      }
+      return out satisfies NextBirthday
+    })
+    .sort((a, b) => {
+      const ad = a.next_birthday.getTime()
+      const bd = b.next_birthday.getTime()
+      if (ad > bd) {
+        return 1
+      }
+      if (bd > ad) {
+        return -1
+      }
+      return 0
+    })
+}
+function calculateAge(birthDate: Date, otherDate: Date = new Date()) {
+  const years = otherDate.getFullYear() - birthDate.getFullYear()
+
+  if (
+    otherDate.getMonth() < birthDate.getMonth() ||
+    (otherDate.getMonth() == birthDate.getMonth() && otherDate.getDate() < birthDate.getDate())
+  ) {
+    return years - 1
+  }
+
+  return years
 }

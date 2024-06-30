@@ -63,6 +63,7 @@ const emojis: Record<Species, string> = {
   cat: '🐱',
   dog: '🐶',
   human: '',
+  alien: '👽',
 }
 </script>
 
@@ -70,7 +71,7 @@ const emojis: Record<Species, string> = {
   <div v-if="isLoading">Laden...</div>
   <div v-else-if="birthdays.length" class="text-center">
     <p v-for="birthday in birthdays" :key="birthday.name">
-      <span>
+      <span :title="`${birthday.name} is geboren op ${formatDate(birthday.birth_date)}.`">
         {{ emojis[birthday.species] }}
         {{ birthday.name }} is op {{ formatDate(birthday.next_birthday) }} jarig en wordt dan
         {{ birthday.age }}!
