@@ -81,7 +81,7 @@ export async function onRequestPost(ctx: EventContext<Env, never, never>) {
       birthday.code,
       birthday.name,
       birthday.birth_date.getTime() / 1000,
-      birthday.website,
+      birthday.website?.toString(),
       birthday.species,
     )
     .run()
