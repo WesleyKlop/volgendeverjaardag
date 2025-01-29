@@ -1,5 +1,6 @@
 import type { D1Database } from '@cloudflare/workers-types/experimental'
 import type { Species } from './types'
+import { calculateAgeInYears, calculateNextBirthday, formatISODate } from './date'
 
 type DbNextBirthday = {
   id: string
@@ -10,10 +11,10 @@ type DbNextBirthday = {
 }
 type NextBirthday = {
   name: string
-  birth_date: Date
+  birth_date: string
   species: Species
   website: null | string
-  next_birthday: Date
+  next_birthday: string
   age: number
 }
 
@@ -38,7 +39,7 @@ export async function getNextBirthdaysByCode(
         name,
         species,
         website,
-        DATE(birth_date, 'unixepoch') AS birth_date
+        birth_date
     FROM
         birthdays
         ${Object.entries(wheres).length ? `WHERE ${Object.keys(wheres).join(' AND ')}` : ''}
@@ -55,44 +56,19 @@ export async function getNextBirthdaysByCode(
   return birthdays.results
     .map((birthday) => {
       const birthDate = new Date(birthday.birth_date)
-      const nextBirthDay = new Date()
-      nextBirthDay.setMonth(birthDate.getMonth())
-      nextBirthDay.setDate(birthDate.getDate())
-      if (nextBirthDay < today) {
-        nextBirthDay.setFullYear(nextBirthDay.getFullYear() + 1)
-      }
-      const out = {
+      const nextBirthDay = calculateNextBirthday(birthDate, today)
+      const out: NextBirthday = {
         name: birthday.name,
-        birth_date: birthDate,
-        next_birthday: nextBirthDay,
+        birth_date: formatISODate(birthDate),
+        next_birthday: formatISODate(nextBirthDay),
         species: birthday.species,
         website: birthday.website,
         // rare off by one ofzo
-        age: calculateAge(birthDate, nextBirthDay),
+        age: calculateAgeInYears(birthDate, nextBirthDay),
       }
-      return out satisfies NextBirthday
+      return out
     })
     .sort((a, b) => {
-      const ad = a.next_birthday.getTime()
-      const bd = b.next_birthday.getTime()
-      if (ad > bd) {
-        return 1
-      }
-      if (bd > ad) {
-        return -1
-      }
-      return 0
+      return a.next_birthday.localeCompare(b.next_birthday)
     })
-}
-function calculateAge(birthDate: Date, otherDate: Date = new Date()) {
-  const years = otherDate.getFullYear() - birthDate.getFullYear()
-
-  if (
-    otherDate.getMonth() < birthDate.getMonth() ||
-    (otherDate.getMonth() == birthDate.getMonth() && otherDate.getDate() < birthDate.getDate())
-  ) {
-    return years - 1
-  }
-
-  return years
 }

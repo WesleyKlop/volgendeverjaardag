@@ -26,7 +26,7 @@ export async function onRequestGet(context: EventContext<Env, 'code', never>) {
   const nextBirthdayDate = birthdays[0].next_birthday
 
   return Response.json(
-    birthdays.filter((bd) => bd.next_birthday.getTime() === nextBirthdayDate.getTime()),
+    birthdays.filter((bd) => bd.next_birthday === nextBirthdayDate),
     { status: 200 },
   )
 }

@@ -9,7 +9,7 @@ export type Species = (typeof allowedSpecies)[number]
 export type Birthday = {
   id: number
   code: string
-  birth_date: Date
+  birth_date: string
   name: string
   website: URL | null
   species: Species
