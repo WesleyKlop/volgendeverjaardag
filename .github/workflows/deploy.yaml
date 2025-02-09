@@ -9,7 +9,7 @@ jobs:
       contents: read
       deployments: write
     environment:
-      name: ${{ steps.publish.outputs.pages-environment }}
+      name: production
       url: ${{ steps.publish.outputs.pages-deployment-alias-url }}
     name: Deploy to Cloudflare Pages
     steps:
