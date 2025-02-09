@@ -37,6 +37,7 @@ jobs:
 
   deploy:
     runs-on: ubuntu-latest
+    if: github.event_name == "push"
     needs: [lint, test]
     permissions:
       contents: read
