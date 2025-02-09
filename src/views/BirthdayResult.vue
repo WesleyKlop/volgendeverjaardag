@@ -17,7 +17,7 @@ const router = useRouter()
 
 const code = computed(() => route.params.code as string)
 
-const updatePerson = async (code: string) => {
+const updateCode = async (code: string) => {
   if (!code) {
     router.push('/')
     return
@@ -40,7 +40,7 @@ const updatePerson = async (code: string) => {
 watch(code, (newCode) => {
   if (typeof newCode === 'string') {
     isLoading.value = true
-    updatePerson(newCode)
+    updateCode(newCode)
   }
 })
 
