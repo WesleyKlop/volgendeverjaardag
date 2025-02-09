@@ -1,11 +1,25 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+@plugin '@tailwindcss/forms';
 
 :root {
-  @apply bg-gray-50 font-sans text-gray-800;
+  @apply font-body bg-gray-50 text-gray-800;
 }
 
-.rainbow-text {
-  @apply bg-rainbow bg-clip-text text-transparent;
+@utility text-rainbow {
+  @apply bg-(image:--rainbow) bg-clip-text text-transparent;
+}
+
+@theme {
+  --rainbow: linear-gradient(
+    to bottom right,
+    var(--color-red-500),
+    var(--color-orange-500),
+    var(--color-yellow-500),
+    var(--color-green-500),
+    var(--color-blue-500),
+    var(--color-indigo-500),
+    var(--color-violet-500)
+  );
+  --font-title: 'DynaPuff', var(--font-body);
+  --font-body: 'Fira Sans', var(--font-sans);
 }

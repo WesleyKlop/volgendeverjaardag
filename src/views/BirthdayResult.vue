@@ -76,20 +76,18 @@ const emojis: Record<Species, string> = {
         {{ birthday.name }} is op {{ formatDate(birthday.next_birthday) }} jarig en wordt dan
         {{ birthday.age }}!
       </span>
-      &nbsp;
       <a
         v-if="birthday.website"
         class="text-xs"
         :href="birthday.website.toString()"
         target="_blank"
         rel="noreferrer"
+        >🎁</a
       >
-        Bekijk hier mijn verlanglijstje.
-      </a>
     </p>
-    <p v-if="isToday" class="text-xl">
+    <p v-if="isToday && !isShowingAll" class="text-xl">
       🎉🥳&nbsp;
-      <button class="rainbow-text" type="button" @click="confetti">
+      <button class="text-rainbow" type="button" @click="confetti">
         En dat is vandaag! Van harte gefeliciteerd!
       </button>
       &nbsp;🥳🎉
