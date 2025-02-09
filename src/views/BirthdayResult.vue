@@ -82,7 +82,8 @@ const emojis: Record<Species, string> = {
         :href="birthday.website.toString()"
         target="_blank"
         rel="noreferrer"
-      >🎁</a>
+        >🎁</a
+      >
     </p>
     <p v-if="isToday && !isShowingAll" class="text-xl">
       🎉🥳&nbsp;

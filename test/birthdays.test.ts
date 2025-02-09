@@ -41,6 +41,14 @@ describe('parseRequestBody', () => {
       birth_date: '2000-10-01',
       website: 'https://pauperhosting.nl/',
       species: 'human',
-    })).toThrowError(new ValidationError('website'))
+    })).toThrowError(new ValidationError('website', 'invalid origin'))
+
+    expect(() => parseRequestBody({
+      code: 'test1234',
+      name: 'Alice',
+      birth_date: '2000-10-01',
+      website: 'niet een valide website domein',
+      species: 'human',
+    })).toThrowError(new ValidationError('website', 'parse error'))
   })
 })

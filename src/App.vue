@@ -6,7 +6,7 @@ const route = useRoute()
 
 <template>
   <main class="mx-auto grid max-w-screen-sm gap-4 p-4">
-    <h1 class="text-center font-title text-4xl text-black">Wie is er ook alweer jarig?</h1>
+    <h1 class="font-title text-center text-4xl text-black">Wie is er ook alweer jarig?</h1>
 
     <RouterView />
 

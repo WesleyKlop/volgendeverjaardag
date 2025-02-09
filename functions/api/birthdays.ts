@@ -20,7 +20,6 @@ export class ValidationError extends Error {
 }
 
 export function parseRequestBody(body: Body): Omit<Birthday, 'id'> {
-  console.log(body)
   if (!allowedSpecies.includes(body.species)) {
     throw new ValidationError('species')
   }
@@ -43,8 +42,7 @@ export function parseRequestBody(body: Body): Omit<Birthday, 'id'> {
   } catch (cause) {
     throw new ValidationError('website', 'parse error')
   }
-
-  if (parsedWebsite instanceof URL && !['lijstje.nl'].includes(parsedWebsite?.host)) {
+  if (parsedWebsite instanceof URL && !['lijstje.nl'].includes(parsedWebsite.host)) {
     throw new ValidationError('website', 'invalid origin')
   }
 
