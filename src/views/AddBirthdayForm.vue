@@ -1,44 +1,47 @@
 <template>
-  <form @submit.prevent="submitForm" class="flex flex-col gap-x-1 gap-y-3">
+  <form
+    class="flex flex-col gap-x-1 gap-y-3"
+    @submit.prevent="submitForm"
+  >
     <p>
       Wanneer je je aanmeldt, kan iedereen via de code die je invult erachter komen wanneer jij als
       volgende jarig bent.
     </p>
 
     <AppInput
-      v-model="form.name"
       id="name-input"
+      v-model="form.name"
       label="Naam"
       placeholder="Jan"
-      autoComplete="given-name"
+      auto-complete="given-name"
       type="text"
       :error="errors.name"
     />
 
     <AppInput
-      v-model="form.birth_date"
       id="birth-input"
+      v-model="form.birth_date"
       label="Geboortedatum"
       placeholder="26-7-1986"
-      autoComplete="bday"
+      auto-complete="bday"
       type="date"
       :error="errors.birth_date"
     />
 
     <AppInput
-      v-model="form.code"
       id="code-input"
+      v-model="form.code"
       label="Groepscode"
-      autoComplete="off"
+      auto-complete="off"
       type="text"
       :error="errors.code"
     />
 
     <AppInput
-      v-model="form.website"
       id="website-input"
+      v-model="form.website"
       label="Verlanglijstje"
-      autoComplete="off"
+      auto-complete="off"
       type="url"
       placeholder="https://lijstje.nl/[jouw lijstje]"
       :error="errors.website"
@@ -56,7 +59,10 @@
       ]"
     />
 
-    <AppButton type="submit" :disabled="!isFormValid">
+    <AppButton
+      type="submit"
+      :disabled="!isFormValid"
+    >
       Feest{{ isFormValid ? '! 🥳' : '?' }}
     </AppButton>
   </form>
@@ -129,6 +135,6 @@ const submitForm = async () => {
   if (!isFormValid.value) return
 
   await submitBirthday(form)
-  router.push('/')
+  await router.push('/')
 }
 </script>

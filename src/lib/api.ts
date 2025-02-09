@@ -25,7 +25,7 @@ export const fetchNextBirthday = async (
       if (r.ok) {
         return r.json() as Promise<RawNextBirthday[]>
       }
-      return Promise.reject()
+      return Promise.reject(new Error('failed to parse response'))
     })
     .then((birthdays) => birthdays.map((bd) => intoNextBirthday(bd)))
     .catch(() => null)

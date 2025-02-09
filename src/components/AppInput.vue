@@ -1,22 +1,37 @@
 <template>
   <div>
-    <label :for="id" class="block text-sm leading-6 font-medium text-gray-900">{{ label }}</label>
+    <label
+      :for="id"
+      class="block text-sm leading-6 font-medium text-gray-900"
+    >
+      {{ label }}
+    </label>
+
     <div class="relative mt-1 rounded-md shadow-sm">
       <input
         :id="id"
+        v-bind="$attrs"
+        v-model="model"
         :class="[
           className,
           'w-full rounded-md border-0 px-3 py-1.5 text-gray-900 ring-1 ring-gray-300 ring-inset placeholder:text-gray-400 focus:ring-2 focus:ring-blue-600 focus:ring-inset sm:text-sm sm:leading-6',
         ]"
-        v-bind="$attrs"
-        v-model="model"
       />
     </div>
 
-    <p v-if="error && model" class="mt-0.5 text-xs font-light text-red-500">
+    <p
+      v-if="error && model"
+      class="mt-0.5 text-xs font-light text-red-500"
+    >
       {{ validationMessage }}
     </p>
-    <p v-else-if="info" class="mt-0.5 text-xs font-light">{{ info }}</p>
+
+    <p
+      v-else-if="info"
+      class="mt-0.5 text-xs font-light"
+    >
+      {{ info }}
+    </p>
   </div>
 </template>
 
