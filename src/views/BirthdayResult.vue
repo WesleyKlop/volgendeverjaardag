@@ -55,7 +55,7 @@ const showAll = async () => {
 onMounted(() => {
   if (typeof code.value === 'string') {
     isLoading.value = true
-    updatePerson(code.value)
+    updateCode(code.value)
   }
 })
 

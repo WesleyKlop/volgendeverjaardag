@@ -8,9 +8,6 @@ jobs:
     permissions:
       contents: read
       deployments: write
-    environment:
-      name: production
-      url: ${{ steps.publish.outputs.pages-deployment-alias-url }}
     name: Deploy to Cloudflare Pages
     steps:
       - name: Checkout
@@ -21,7 +18,7 @@ jobs:
           cache: 'npm'
       - run: npm ci
       - run: npm run build
-      - name: Publish
+      - name: Deploy
         uses: cloudflare/wrangler-action@v3
         id: publish
         with:
