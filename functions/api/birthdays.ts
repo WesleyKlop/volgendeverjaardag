@@ -1,7 +1,8 @@
 import type { EventContext } from '@cloudflare/workers-types/experimental'
 import { allowedSpecies, type Birthday, type Env, type Species } from '../types'
+import { isValidISODate } from '../date'
 
-type Body = {
+export type Body = {
   code: string
   birth_date: string
   name: string
@@ -9,7 +10,7 @@ type Body = {
   species: Species
 }
 
-class ValidationError extends Error {
+export class ValidationError extends Error {
   constructor(
     public readonly fieldName: string,
     public readonly info = '',
@@ -18,14 +19,13 @@ class ValidationError extends Error {
   }
 }
 
-function parseRequestBody(body: Body): Omit<Birthday, 'id'> {
+export function parseRequestBody(body: Body): Omit<Birthday, 'id'> {
   console.log(body)
   if (!allowedSpecies.includes(body.species)) {
     throw new ValidationError('species')
   }
 
-  const parsedDate = new Date(body.birth_date)
-  if (isNaN(parsedDate.getTime())) {
+  if (!isValidISODate(body.birth_date)) {
     throw new ValidationError('birth_date')
   }
 
@@ -51,7 +51,7 @@ function parseRequestBody(body: Body): Omit<Birthday, 'id'> {
   return {
     code: body.code,
     name: body.name,
-    birth_date: parsedDate,
+    birth_date: body.birth_date,
     website: parsedWebsite,
     species: body.species,
   }
@@ -75,12 +75,12 @@ export async function onRequestPost(ctx: EventContext<Env, never, never>) {
       `INSERT INTO birthdays 
          (code, name, birth_date, website, species) 
        VALUES 
-         (?, ?, ?, ?, ?)`,
+         (?, ?, date(?), ?, ?)`,
     )
     .bind(
       birthday.code,
       birthday.name,
-      birthday.birth_date.getTime() / 1000,
+      birthday.birth_date,
       birthday.website?.toString() ?? null,
       birthday.species,
     )

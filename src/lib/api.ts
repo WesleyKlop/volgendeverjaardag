@@ -4,7 +4,6 @@ import {
   type RawNextBirthday,
   type Species,
   intoBirthday,
-  type RawBirthday,
 } from './birthday'
 
 export const fetchNextBirthday = async (

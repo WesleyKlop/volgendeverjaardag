@@ -91,9 +91,14 @@ const errors = reactive({
   website: '',
 })
 
+// TODO: IDK how to share this function with the backend
+function isValidISODate(date: string): boolean {
+  return /^\d{4}-\d{2}-\d{2}$/.test(date) == true && isNaN(Date.parse(date)) == false
+}
+
 const validateForm = () => {
   errors.name = form.name ? '' : 'Dit veld is verplicht'
-  errors.birth_date = !isNaN(Date.parse(form.birth_date)) ? '' : 'Ongeldige datum'
+  errors.birth_date = isValidISODate(form.birth_date) ? '' : 'Ongeldige datum'
   errors.code = form.code.length >= MIN_CODE_LENGTH ? '' : `Minimaal ${MIN_CODE_LENGTH} karakters`
   if (form.website) {
     try {
