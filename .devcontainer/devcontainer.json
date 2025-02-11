@@ -1,0 +1,24 @@
+{
+    "image": "mcr.microsoft.com/devcontainers/universal:2",
+    "waitFor": "onCreateCommand",
+    "updateContentCommand": "npm install",
+    "postCreateCommand": "",
+    "postAttachCommand": {
+      "server": "npm run dev"
+    },
+    "customizations": {
+      "codespaces": {
+        "openFiles": [
+          "src/App.vue"
+        ]
+      }
+    },
+    "portsAttributes": {
+      "5173": {
+        "label": "Application",
+        "onAutoForward": "openPreview"
+      }
+    },
+    "forwardPorts": [5173]
+  }
+  
