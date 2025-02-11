@@ -3,6 +3,9 @@
   "features": {
     "ghcr.io/rails/devcontainer/features/sqlite3:latest": {}
   },
+  "hostRequirements": {
+    "cpus": 4
+  },
   "waitFor": "onCreateCommand",
   "updateContentCommand": "npm install",
   "postCreateCommand": "",
