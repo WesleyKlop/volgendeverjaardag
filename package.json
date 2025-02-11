@@ -5,6 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "create-dev-database": "wrangler d1 migrations apply --local volgendeverjaardag_preview",
+    "devserver": "wrangler pages dev --port 4242",
     "test": "vitest",
     "build": "vite build",
     "format": "prettier --write src/ \"*.json\"",
@@ -43,7 +45,7 @@
     "vite-plugin-vue-devtools": "^7.0.18",
     "vitest": "^3.0.5",
     "vue-tsc": "^2.0.6",
-    "wrangler": "^3.60.2"
+    "wrangler": "^3.108.0"
   },
   "volta": {
     "node": "22.13.1"
