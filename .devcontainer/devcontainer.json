@@ -8,9 +8,9 @@
   },
   "waitFor": "onCreateCommand",
   "updateContentCommand": "npm install",
-  "postCreateCommand": "",
+  "postCreateCommand": "echo 'y' | npm run create-dev-database",
   "postAttachCommand": {
-    "server": "echo 'y' | npm run create-dev-database && npm run devserver"
+    "server": "npm run build && npm run devserver"
   },
   "customizations": {
     "codespaces": {
