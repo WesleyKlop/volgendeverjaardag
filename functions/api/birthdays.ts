@@ -39,7 +39,7 @@ export function parseRequestBody(body: Body): Omit<Birthday, 'id'> {
   let parsedWebsite: null | URL = null
   try {
     if (body.website) parsedWebsite = new URL(body.website)
-  } catch (cause) {
+  } catch {
     throw new ValidationError('website', 'parse error')
   }
   if (parsedWebsite instanceof URL && !['lijstje.nl'].includes(parsedWebsite.host)) {

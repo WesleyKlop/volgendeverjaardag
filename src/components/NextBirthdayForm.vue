@@ -12,22 +12,30 @@ const formState = reactive({
 const isValid = computed(() => formState.code.length >= MIN_CODE_LENGTH)
 
 function submitForm() {
-  router.push(`/code/${formState.code}`)
+  return router.push(`/code/${formState.code}`)
 }
 </script>
 
 <template>
-  <form @submit.prevent="submitForm" className="flex flex-col gap-6">
+  <form
+    className="flex flex-col gap-6"
+    @submit.prevent="submitForm"
+  >
     <AppInput
+      id="code-input"
       v-model="formState.code"
       required
-      id="code-input"
       label="Jouw groepscode"
-      autoComplete="off"
-      autoFocus
+      auto-complete="off"
+      auto-focus
       type="text"
     />
 
-    <AppButton type="submit" :disabled="!isValid">Feest {{ isValid ? '! 🥳' : '?' }}</AppButton>
+    <AppButton
+      type="submit"
+      :disabled="!isValid"
+    >
+      Feest {{ isValid ? '! 🥳' : '?' }}
+    </AppButton>
   </form>
 </template>

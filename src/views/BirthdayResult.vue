@@ -19,7 +19,7 @@ const code = computed(() => route.params.code as string)
 
 const updateCode = async (code: string) => {
   if (!code) {
-    router.push('/')
+    await router.push('/')
     return
   }
   const result = await fetchNextBirthday(code)
@@ -40,13 +40,13 @@ const updateCode = async (code: string) => {
 watch(code, (newCode) => {
   if (typeof newCode === 'string') {
     isLoading.value = true
-    updateCode(newCode)
+    void updateCode(newCode)
   }
 })
 
 const showAll = async () => {
   isLoading.value = true
-  const result = await fetchNextBirthday(code.value!, true)
+  const result = await fetchNextBirthday(code.value, true)
   if (result) birthdays.value = result
   isLoading.value = false
   isShowingAll.value = true
@@ -55,7 +55,7 @@ const showAll = async () => {
 onMounted(() => {
   if (typeof code.value === 'string') {
     isLoading.value = true
-    updateCode(code.value)
+    void updateCode(code.value)
   }
 })
 
@@ -69,32 +69,54 @@ const emojis: Record<Species, string> = {
 
 <template>
   <div v-if="isLoading">Laden...</div>
-  <div v-else-if="birthdays.length" class="text-center">
-    <p v-for="birthday in birthdays" :key="birthday.name">
+
+  <div
+    v-else-if="birthdays.length"
+    class="text-center"
+  >
+    <p
+      v-for="birthday in birthdays"
+      :key="birthday.name"
+    >
       <span :title="`${birthday.name} is geboren op ${formatDate(birthday.birth_date)}.`">
-        {{ emojis[birthday.species] }}
-        {{ birthday.name }} is op {{ formatDate(birthday.next_birthday) }} jarig en wordt dan
-        {{ birthday.age }}!
+        {{ emojis[birthday.species] }} {{ birthday.name }} is op
+        {{ formatDate(birthday.next_birthday) }} jarig en wordt dan {{ birthday.age }}!
       </span>
+
       <a
         v-if="birthday.website"
         class="text-xs"
         :href="birthday.website.toString()"
         target="_blank"
         rel="noreferrer"
-        >🎁</a
       >
+        🎁
+      </a>
     </p>
-    <p v-if="isToday && !isShowingAll" class="text-xl">
+
+    <p
+      v-if="isToday && !isShowingAll"
+      class="text-xl"
+    >
       🎉🥳&nbsp;
-      <button class="text-rainbow" type="button" @click="confetti">
+      <button
+        class="text-rainbow"
+        type="button"
+        @click="confetti"
+      >
         En dat is vandaag! Van harte gefeliciteerd!
       </button>
       &nbsp;🥳🎉
     </p>
-    <AppButton v-if="!isShowingAll" class="mt-4" @click="showAll">
+
+    <AppButton
+      v-if="!isShowingAll"
+      class="mt-4"
+      @click="showAll"
+    >
       Bekijk welke verjaardagen er nog meer aan komen
     </AppButton>
   </div>
+
   <div v-else>Niemand gevonden. Bestaat de code wel?</div>
 </template>

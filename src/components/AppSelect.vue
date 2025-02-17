@@ -1,17 +1,25 @@
 <template>
-  <Listbox as="div" v-model="selected">
-    <ListboxLabel class="block text-sm leading-6 font-medium text-gray-900">{{
-      label
-    }}</ListboxLabel>
+  <Listbox
+    v-model="selectedOption"
+    as="div"
+  >
+    <ListboxLabel class="block text-sm leading-6 font-medium text-gray-900">
+      {{ label }}
+    </ListboxLabel>
+
     <div class="relative mt-1">
       <ListboxButton
         class="relative w-full cursor-default rounded-md bg-white py-1.5 pr-10 pl-3 text-left text-gray-900 ring-1 shadow-sm ring-gray-300 ring-inset focus:ring-2 focus:ring-blue-500 focus:outline-none sm:text-sm sm:leading-6"
       >
         <span class="flex items-center">
-          <span class="block truncate">{{ selected.label }}</span>
+          <span class="block truncate">{{ selectedOption.label }}</span>
         </span>
+
         <span class="pointer-events-none absolute inset-y-0 right-0 ml-3 flex items-center pr-2">
-          <ChevronUpDownIcon class="h-5 w-5 text-gray-400" aria-hidden="true" />
+          <ChevronUpDownIcon
+            class="h-5 w-5 text-gray-400"
+            aria-hidden="true"
+          />
         </span>
       </ListboxButton>
 
@@ -24,11 +32,11 @@
           class="ring-opacity-5 absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base ring-1 shadow-lg ring-black focus:outline-none sm:text-sm"
         >
           <ListboxOption
-            as="template"
             v-for="option in options"
             :key="option.value"
-            :value="option"
             v-slot="{ active, selected }"
+            as="template"
+            :value="option"
           >
             <li
               :class="[
@@ -37,9 +45,9 @@
               ]"
             >
               <div class="flex items-center">
-                <span :class="[selected ? 'font-semibold' : 'font-normal', 'block truncate']">{{
-                  option.label
-                }}</span>
+                <span :class="[selected ? 'font-semibold' : 'font-normal', 'block truncate']">
+                  {{ option.label }}
+                </span>
               </div>
 
               <span
@@ -49,7 +57,10 @@
                   'absolute inset-y-0 right-0 flex items-center pr-4',
                 ]"
               >
-                <CheckIcon class="h-5 w-5" aria-hidden="true" />
+                <CheckIcon
+                  class="h-5 w-5"
+                  aria-hidden="true"
+                />
               </span>
             </li>
           </ListboxOption>
@@ -78,7 +89,7 @@ const props = defineProps<{
 
 const selectedVal = ref(0)
 
-const selected = computed<(typeof props.options)[number]>({
+const selectedOption = computed<(typeof props.options)[number]>({
   get() {
     return props.options[selectedVal.value]
   },
