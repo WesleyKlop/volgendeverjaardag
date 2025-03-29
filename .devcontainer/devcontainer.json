@@ -1,0 +1,35 @@
+{
+  "image": "mcr.microsoft.com/devcontainers/javascript-node",
+  "features": {
+    "ghcr.io/rails/devcontainer/features/sqlite3:latest": {}
+  },
+  "hostRequirements": {
+    "cpus": 4
+  },
+  "waitFor": "onCreateCommand",
+  "updateContentCommand": "npm install",
+  "postCreateCommand": "echo 'y' | npm run create-dev-database",
+  "postAttachCommand": {
+    "server": "npm run build && npm run devserver"
+  },
+  "customizations": {
+    "codespaces": {
+      "openFiles": ["src/App.vue"]
+    },
+    "vscode": {
+      "extensions": [
+        "Vue.volar",
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "vitest.explorer"
+      ]
+    }
+  },
+  "portsAttributes": {
+    "4242": {
+      "label": "Application",
+      "onAutoForward": "openPreview"
+    }
+  },
+  "forwardPorts": [4242]
+}
