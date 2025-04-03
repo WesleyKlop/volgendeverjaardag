@@ -24,11 +24,20 @@ export function calculateAgeInYears(birthDate: Date, otherDate: Date = new Date(
 
 // Returns the next birthday after the given date
 export function calculateNextBirthday(birthDate: Date, today: Date): Date {
-  const nextBirthDay = new Date()
-  nextBirthDay.setMonth(birthDate.getMonth())
-  nextBirthDay.setDate(birthDate.getDate())
-  if (nextBirthDay < today) {
-    nextBirthDay.setFullYear(nextBirthDay.getFullYear() + 1)
+  // Initialize based on today's year, birth month, and birth date
+  const nextBirthDay = new Date(today.getFullYear(), birthDate.getMonth(), birthDate.getDate());
+
+  // Create date-only versions for comparison (set time to 00:00:00)
+  const todayDateOnly = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+
+  // Check if the calculated birthday date is before today's date
+  if (nextBirthDay < todayDateOnly) {
+    // If it has passed, set the year to the next year
+    nextBirthDay.setFullYear(nextBirthDay.getFullYear() + 1);
+    // Re-set month and date in case of leap year rollover issues (e.g., Feb 29 -> Mar 1)
+    // JS Date object handles this automatically, but being explicit can clarify intent.
+    nextBirthDay.setMonth(birthDate.getMonth());
+    nextBirthDay.setDate(birthDate.getDate());
   }
   return nextBirthDay
 }
