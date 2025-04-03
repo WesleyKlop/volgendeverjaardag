@@ -38,6 +38,7 @@ jobs:
 
   deploy:
     runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
     needs: [lint, test]
     permissions:
       contents: read
