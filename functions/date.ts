@@ -25,9 +25,10 @@ export function calculateAgeInYears(birthDate: Date, otherDate: Date = new Date(
 
 // Returns the next birthday after the given date
 export function calculateNextBirthday(birthDate: Date, today: Date): Date {
-  const nextBirthDay = new Date()
-  nextBirthDay.setUTCMonth(birthDate.getUTCMonth())
-  nextBirthDay.setUTCDate(birthDate.getUTCDate())
+  const currentYear = new Date(Date.now())
+  const nextBirthDay = new Date(
+    Date.UTC(currentYear.getUTCFullYear(), birthDate.getUTCMonth(), birthDate.getUTCDate()),
+  )
   if (nextBirthDay < today) {
     nextBirthDay.setUTCFullYear(nextBirthDay.getUTCFullYear() + 1)
   }
