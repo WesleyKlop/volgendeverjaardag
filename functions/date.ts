@@ -10,11 +10,12 @@ export function isValidISODate(date: string): boolean {
 
 // Returns the age in years between the given birth date and the other date
 export function calculateAgeInYears(birthDate: Date, otherDate: Date = new Date()): number {
-  const years = otherDate.getFullYear() - birthDate.getFullYear()
+  const years = otherDate.getUTCFullYear() - birthDate.getUTCFullYear()
 
   if (
-    otherDate.getMonth() < birthDate.getMonth() ||
-    (otherDate.getMonth() == birthDate.getMonth() && otherDate.getDate() < birthDate.getDate())
+    otherDate.getUTCMonth() < birthDate.getUTCMonth() ||
+    (otherDate.getUTCMonth() == birthDate.getUTCMonth() &&
+      otherDate.getUTCDate() < birthDate.getUTCDate())
   ) {
     return years - 1
   }
@@ -24,11 +25,12 @@ export function calculateAgeInYears(birthDate: Date, otherDate: Date = new Date(
 
 // Returns the next birthday after the given date
 export function calculateNextBirthday(birthDate: Date, today: Date): Date {
-  const nextBirthDay = new Date()
-  nextBirthDay.setMonth(birthDate.getMonth())
-  nextBirthDay.setDate(birthDate.getDate())
+  const currentYear = new Date(Date.now())
+  const nextBirthDay = new Date(
+    Date.UTC(currentYear.getUTCFullYear(), birthDate.getUTCMonth(), birthDate.getUTCDate()),
+  )
   if (nextBirthDay < today) {
-    nextBirthDay.setFullYear(nextBirthDay.getFullYear() + 1)
+    nextBirthDay.setUTCFullYear(nextBirthDay.getUTCFullYear() + 1)
   }
   return nextBirthDay
 }

@@ -2,6 +2,10 @@ name="volgendeverjaardag"
 pages_build_output_dir="./dist"
 compatibility_date = "2025-02-09"
 
+# First check if the UTC solutions works before enabling this
+# [vars]
+# TZ = "Europe/Amsterdam"
+
 [[d1_databases]]
 binding = "DB"
 preview_database_id = "DB"

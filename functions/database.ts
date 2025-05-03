@@ -55,7 +55,8 @@ export async function getNextBirthdaysByCode(
   const today = new Date()
   return birthdays.results
     .map((birthday) => {
-      const birthDate = new Date(birthday.birth_date)
+      // The Date constructor would default to the current time when not specified.
+      const birthDate = new Date(birthday.birth_date + 'T00:00:00.000Z')
       const nextBirthDay = calculateNextBirthday(birthDate, today)
       const out: NextBirthday = {
         name: birthday.name,
@@ -63,7 +64,6 @@ export async function getNextBirthdaysByCode(
         next_birthday: formatISODate(nextBirthDay),
         species: birthday.species,
         website: birthday.website,
-        // rare off by one ofzo
         age: calculateAgeInYears(birthDate, nextBirthDay),
       }
       return out
