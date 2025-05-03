@@ -45,7 +45,7 @@
     "vite-plugin-vue-devtools": "^7.0.18",
     "vitest": "^3.0.5",
     "vue-tsc": "^2.0.6",
-    "wrangler": "^3.114.8"
+    "wrangler": "^4.14.1"
   },
   "volta": {
     "node": "22.13.1"
