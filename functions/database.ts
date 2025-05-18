@@ -1,6 +1,11 @@
 import type { D1Database } from '@cloudflare/workers-types/experimental'
 import type { Species } from './types'
-import { calculateAgeInYears, calculateNextBirthday, formatISODate } from './date'
+import {
+  calculateAgeInYears,
+  calculateNextBirthday,
+  formatISODate,
+  newStartOfDayDate,
+} from './date'
 
 type DbNextBirthday = {
   id: string
@@ -52,11 +57,11 @@ export async function getNextBirthdaysByCode(
     return []
   }
 
-  const today = new Date()
+  const today = newStartOfDayDate(Date.now())
   return birthdays.results
     .map((birthday) => {
       // The Date constructor would default to the current time when not specified.
-      const birthDate = new Date(birthday.birth_date + 'T00:00:00.000Z')
+      const birthDate = newStartOfDayDate(birthday.birth_date)
       const nextBirthDay = calculateNextBirthday(birthDate, today)
       const out: NextBirthday = {
         name: birthday.name,
